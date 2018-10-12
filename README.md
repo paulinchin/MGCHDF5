@@ -2,7 +2,7 @@
 
 These are fortran subroutines and MATLAB scripts to work with HDF5 MAGIC3D output.
 
-Fortran subroutines:
+**Fortran subroutines**:
 1. out3 (out3_mpi_h5.f90)
 Output full 3D domain of all q to hdf5 format file
 Output filename format: fort.qXXXX.h5
