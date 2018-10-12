@@ -49,3 +49,18 @@ Be sure to remove other compilers before compiling (module rm ......).
   
 2. Makefile change:
 Updated Makefile can be found in /MAGIC3D folder
+
+## **Matlab script**:<br>
+New Matlab scripts can import the whole 3D domain (mx,my,mz,q) as it was done for earlier versions, however it may take a lot of time and resources, thus this function is depreciated. New functionality allows importing and working with only particular horizontal (in x or y) and horizontal slices.
+<p>
+  Current scripts are:<br>
+  1. calcsliceh5.m - calculates which threads should be output when out3ver output subroutine is used<br>
+  2. readmagich5.m - main script to set parameters and run output routines<br>
+  3. initialization.m - load MSIS profile and reads simulation parameters<br>
+  4. slicing.m - contains function to work with output. Current version allows:<br>
+    a. Retrieve vertical slice in x or y direction setting slice position in meters<br>
+    b. Retrieve horizontal slice in z direction setting slice position in meters<br>
+    c. Load full 3D domain of all variables<br>
+  The script allows working with all 3 types of outputs (out3, out3ver, out3hor)<br>
+  The script allows retrieving only particular variables (in current version: 'u','v','w','rhop','rhorp','doxp','dnit2p','dox2p')<br>
+  The script allows make plots and video output<br>
