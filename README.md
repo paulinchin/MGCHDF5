@@ -3,10 +3,12 @@
 These are fortran subroutines and MATLAB scripts to work with HDF5 MAGIC3D output.
 
 **Fortran subroutines**:<br>
+
 1. out3 (out3_mpi_h5.f90)<br>
 Output full 3D domain of all q to hdf5 format file<br>
 Output filename format: fort.qXXXX.h5<br>
 <p>
+  
 2. outslicehor3 (out3_mpi_h5slicehor.f90)<br>
 Output data only at altitudes of interest.<br>
 Set next parameters in out3_mpi_h5slicehor.f90:<br>
