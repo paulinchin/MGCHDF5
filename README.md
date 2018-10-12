@@ -31,6 +31,6 @@ module load szip/intel-compiler/2.1.1
 module load hdf5/intel-mpi/intel-compiler/1.8.19
 module load intel/mpi/64/2018/1.163
 module load intel/compiler/64/2018/18.0.1
-Be sure to remove other compilers before compiling (module rm ......)
+Be sure to remove other compilers before compiling (module rm ......).
 2. Makefile change:
 Updated Makefile can be found in /MAGIC3D folder
