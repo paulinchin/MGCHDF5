@@ -33,9 +33,8 @@ Subroutine to restart from needed frame. Note that output used to restart should
 In order to use these functions please add them in clawez_mpi.f
 <p>
   
-## ** Compilation **
-
-on Vega assumes changes in Makefile and modules used:<br>
+## Compilation
+Compilation on Vega assumes changes in Makefile and used modules:<br>
 1. Executable MAGIC should be compiled with next modules which should be loaded on Vega:
 <p>
 module load szip/intel-compiler/2.1.1<br>
