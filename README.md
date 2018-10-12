@@ -2,7 +2,7 @@
 
 These are fortran subroutines and MATLAB scripts to work with HDF5 MAGIC3D output.
 
-**Fortran subroutines**:<br>
+## **Fortran subroutines**:<br>
 
 1. out3 (out3_mpi_h5.f90)<br>
 Output full 3D domain of all q to hdf5 format file<br>
@@ -33,7 +33,9 @@ Subroutine to restart from needed frame. Note that output used to restart should
 In order to use these functions please add them in clawez_mpi.f
 <p>
   
-Compilation on Vega assumes changes in Makefile and modules used:<br>
+## ** Compilation **
+
+on Vega assumes changes in Makefile and modules used:<br>
 1. Executable MAGIC should be compiled with next modules which should be loaded on Vega:
 <p>
 module load szip/intel-compiler/2.1.1<br>
