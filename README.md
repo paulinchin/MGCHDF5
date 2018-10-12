@@ -2,7 +2,7 @@
 
 These are fortran subroutines and MATLAB scripts to work with HDF5 MAGIC3D output.
 
-## **Fortran subroutines**:<br>
+## Fortran subroutines<br>
 
 1. out3 (out3_mpi_h5.f90)<br>
 Output full 3D domain of all q to hdf5 format file<br>
@@ -50,7 +50,7 @@ Be sure to remove other compilers before compiling (module rm ......).
 2. Makefile change:
 Updated Makefile can be found in /MAGIC3D folder
 
-## **Matlab script**:<br>
+## Matlab script<br>
 New Matlab scripts can import the whole 3D domain (mx,my,mz,q) as it was done for earlier versions, however it may take a lot of time and resources, thus this function is depreciated. New functionality allows importing and working with only particular horizontal (in x or y) and horizontal slices.
 <p>
   **Current scripts are**:<br>
