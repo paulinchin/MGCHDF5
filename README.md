@@ -28,13 +28,10 @@ Subroutine to restart from needed frame. Note that output used to restart should
 Compilation on Vega assumes changes in Makefile and modules used:
 1. Executable MAGIC should be compiled with next modules which should be loaded on Vega:
 
-module load szip/intel-compiler/2.1.1
-
-module load hdf5/intel-mpi/intel-compiler/1.8.19
-
-module load intel/mpi/64/2018/1.163
-
-module load intel/compiler/64/2018/18.0.1
+module load szip/intel-compiler/2.1.1<br>
+module load hdf5/intel-mpi/intel-compiler/1.8.19<br>
+module load intel/mpi/64/2018/1.163<br>
+module load intel/compiler/64/2018/18.0.1<br>
 
 Be sure to remove other compilers before compiling (module rm ......).
 2. Makefile change:
