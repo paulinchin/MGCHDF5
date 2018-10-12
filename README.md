@@ -30,6 +30,9 @@ Output filename format: fort.qvXXXX.h5<br>
 Subroutine to restart from needed frame. Note that output used to restart should be output from out3 (out3_mpi_h5.f90) routine
 <p>
 
+In order to use these functions please add them in clawez_mpi.f
+<p>
+  
 Compilation on Vega assumes changes in Makefile and modules used:<br>
 1. Executable MAGIC should be compiled with next modules which should be loaded on Vega:
 <p>
