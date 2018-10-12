@@ -30,7 +30,7 @@ Output filename format: fort.qvXXXX.h5<br>
 Subroutine to restart from needed frame. Note that output used to restart should be output from out3 (out3_mpi_h5.f90) routine
 <p>
 
-Notes:<br>
+<b>Notes</b>:<br>
 1. In order to use these functions please add them in clawez_mpi.f<br>
 2. If several different outputs are needed (for example full for every 1 min and slice for every 1 sec) use different conditions in claw3ez_mpi.f for *if (iframe*nstepout .eq. n) then*
 
@@ -53,7 +53,7 @@ Updated Makefile can be found in /MAGIC3D folder
 ## Matlab script<br>
 New Matlab scripts can import the whole 3D domain (mx,my,mz,q) as it was done for earlier versions, however it may take a lot of time and resources, thus this function is depreciated. New functionality allows importing and working with only particular horizontal (in x or y) and horizontal slices.
 <p>
-  ** Current scripts are **:<br>
+  <b>Current scripts </b><br>
   1. calcsliceh5.m - calculates which threads should be output when out3ver output subroutine is used<br>
   2. readmagich5.m - main script to set parameters and run output routines<br>
   3. initialization.m - load MSIS profile and reads simulation parameters<br>
