@@ -45,7 +45,7 @@ for i=1:1:MaxFrames
         yhigher = ylower + (my-1)*dy;
         zhigher = zlower + (mz)*dz;
 
-        if ((slicekm>=ylower) && (slicekm<yhigher))
+        if ((slicekm>=ylower) && (slicekm<=yhigher))
         namedataset;
         listofproc = [listofproc,id];
         myylower = ylower;
@@ -78,7 +78,7 @@ for i=1:1:MaxFrames
         data = squeeze(tempp(:,sliceinID,:,:));
         datafullset = [datafullset;data];
         end
-    
+        pause
     end    
 
     %-------------- Make zonal (x) slice ----------%      
@@ -198,6 +198,32 @@ for i=1:1:MaxFrames
         end
   
     end
+    
+    %-------------- Input full 3D domain  --------------%
+    if (strcmp(flagslice,'full'))
+
+        cellataltitude = 1;
+        id = 1;
+        dataset=[];
+        datafullset=[];
+        for ii=1:1:lx
+        for jj=1:1:ly
+        namedataset = strcat('/Pid',num2str(id));
+        tempp = hdf5read(nameCur,namedataset);
+        dataset = [dataset,squeeze(tempp(:,:,:,:))];
+        id = id+1;
+        end
+
+        datafullset = [datafullset;dataset];
+        size(datafullset);
+        dataset=[];
+        end
+        
+        fprintf('Full 3D domain is loaded\n');
+        pause
+    end
+    
+    
     
     if(figuresoutput)
     plotting

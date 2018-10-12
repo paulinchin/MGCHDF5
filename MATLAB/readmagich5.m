@@ -1,6 +1,6 @@
 %%
 close all
-clear all
+%clear all
 clc
 it=1;
 listofproc = [];
@@ -8,23 +8,24 @@ listofproc = [];
                     %-------------- Setup --------------%
                     
 % Set 1 to plots figures
-videooutput = 1;
+videooutput = 0;
 % Set 1 to collect slides for creating a video
-figuresoutput = 1;
+figuresoutput = 0;
 
 % Set what input to expect.
-%ouputtype = 'v'; % Vertical slice
-%ouputtype = 'h'; % Horizontal slice
-ouputtype = 'all'; % Full 3D domain
+%ouputtype = 'v'; % Vertical slice (out3ver)
+%ouputtype = 'h'; % Horizontal slice (out3hor)
+ouputtype = 'all'; % Full 3D domain (out3)
 
 % Uncomment one of the flags for needed slice:
 %flagslice = 'zonal'; % constant x slice
 flagslice = 'meridional'; % constant y slice
 %flagslice = 'horizontal'; % constant z slice
 %flagslice = 'horizontalslice'; % constant z from horizontal sliced output
+%flagslice = 'full'; % constant y slice
 
 % Set distance of slice from 0 in meters in needed direction
-slicekm = 240000;
+slicekm = 238000;
 
 % Uncomment flags of variable to output
 % Use proposed values or set index (number) of meqn (e.g. 1 - rho)

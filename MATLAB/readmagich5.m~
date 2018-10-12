@@ -1,38 +1,49 @@
+sss = squeeze(datafullset(:,120,:,1));
+bbb = squeeze(datafullset(:,120,:,4));
+zzz = (bbb./sss)';
+
+
+
 %%
 close all
-clear all
+%clear all
 clc
+it=1;
+listofproc = [];
 
                     %-------------- Setup --------------%
                     
+% Set 1 to plots figures
+videooutput = 0;
 % Set 1 to collect slides for creating a video
-videooutput = 1;
-figuresoutput = 1;
+figuresoutput = 0;
 
-% Uncomment one of the flag for slices
-%flagslice = 'zonal'; % constant x
-flagslice = 'meridional'; % constant y
-%flagslice = 'horizontal'; % constant z
+% Set what input to expect.
+%ouputtype = 'v'; % Vertical slice (out3ver)
+%ouputtype = 'h'; % Horizontal slice (out3hor)
+ouputtype = 'all'; % Full 3D domain (out3)
+
+% Uncomment one of the flags for needed slice:
+%flagslice = 'zonal'; % constant x slice
+flagslice = 'meridional'; % constant y slice
+%flagslice = 'horizontal'; % constant z slice
 %flagslice = 'horizontalslice'; % constant z from horizontal sliced output
+%flagslice = 'full'; % constant y slice
 
-% Uncomment needed distance of slice from 0 in meters
-%slicezonalkm = 102000; % x direction
-slicemeridionalkm = 240000; % y direction
-%slicehorizontalkm = 250000; % z direction
+% Set distance of slice from 0 in meters in needed direction
+slicekm = 18000%236000;
 
-% Uncomment needed to output flags
+% Uncomment flags of variable to output
 % Use proposed values or set index (number) of meqn (e.g. 1 - rho)
-% If scaled velocities are needed - add s to the end of variable (e.g. ws)
-% Currently among possible outputs:
-% flagpar = {'u','v','w','rhop','rhorp','doxp','dnit2p','dox2p'};
 % If other variables are needed - correct plotting.m
+% If scaled velocities are needed - add s to the end of variable (e.g. 'ws')
+% Currently among possible outputs:
+% {'u','v','w','rhop','rhorp','doxp','dnit2p','dox2p'};
 flagpar = {'w'};
 
 % Do initialization
 initialization
 
-it=1;
-listofproc = [];
 MaxFrames = 900; % Number of Frames
 Frame=132; % Frame to start
 
