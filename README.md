@@ -16,6 +16,7 @@ numberofslices - set number of slices to output<br>
 numslice - set cell number to output<br>
 Output filename format: fort.qhXXXX.h5<br>
 <p>
+  
 3. outslicever3 (out3_mpi_h5slicever.f90)<br>
 Output data only at altitudes of interest.<br>
 Set next parameters in out3_mpi_h5slicever.f90:<br>
@@ -24,9 +25,11 @@ idarray<br>
 Both parameters can be found using "calcsliceh5.m" script<br>
 Output filename format: fort.qvXXXX.h5<br>
 <p>
+  
 4. restart (restart3_mpi_hdf.f90)<br>
 Subroutine to restart from needed frame. Note that output used to restart should be output from out3 (out3_mpi_h5.f90) routine
 <p>
+
 Compilation on Vega assumes changes in Makefile and modules used:<br>
 1. Executable MAGIC should be compiled with next modules which should be loaded on Vega:
 <p>
