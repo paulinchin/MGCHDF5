@@ -2,41 +2,37 @@
 close all
 clear all
 clc
-it=1;
-listofproc = [];
 
                     %-------------- Setup --------------%
                     
-% Set 1 to plots figures
-videooutput = 1;
 % Set 1 to collect slides for creating a video
+videooutput = 1;
 figuresoutput = 1;
 
-% Set what input to expect.
-%ouputtype = 'v'; % Vertical slice
-%ouputtype = 'h'; % Horizontal slice
-ouputtype = 'all'; % Full 3D domain
-
-% Uncomment one of the flags for needed slice:
-%flagslice = 'zonal'; % constant x slice
-flagslice = 'meridional'; % constant y slice
-%flagslice = 'horizontal'; % constant z slice
+% Uncomment one of the flag for slices
+%flagslice = 'zonal'; % constant x
+flagslice = 'meridional'; % constant y
+%flagslice = 'horizontal'; % constant z
 %flagslice = 'horizontalslice'; % constant z from horizontal sliced output
 
-% Set distance of slice from 0 in meters in needed direction
-slicekm = 240000;
+% Uncomment needed distance of slice from 0 in meters
+%slicezonalkm = 102000; % x direction
+slicemeridionalkm = 240000; % y direction
+%slicehorizontalkm = 250000; % z direction
 
-% Uncomment flags of variable to output
+% Uncomment needed to output flags
 % Use proposed values or set index (number) of meqn (e.g. 1 - rho)
-% If other variables are needed - correct plotting.m
-% If scaled velocities are needed - add s to the end of variable (e.g. 'ws')
+% If scaled velocities are needed - add s to the end of variable (e.g. ws)
 % Currently among possible outputs:
-% {'u','v','w','rhop','rhorp','doxp','dnit2p','dox2p'};
+% flagpar = {'u','v','w','rhop','rhorp','doxp','dnit2p','dox2p'};
+% If other variables are needed - correct plotting.m
 flagpar = {'w'};
 
 % Do initialization
 initialization
 
+it=1;
+listofproc = [];
 MaxFrames = 900; % Number of Frames
 Frame=132; % Frame to start
 

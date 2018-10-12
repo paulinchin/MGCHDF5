@@ -127,8 +127,7 @@ end
 %    if Frame==0 T0=T; end;
 %    Tp=T-T0;
         
-        
-        figure('pos',[500 500 1000 1000])
+        figure('pos',[500 500 600 600])
         imagesc(xaxis,yaxis,outvar')
         axis xy
         xlabel(xlab,'FontSize',14);

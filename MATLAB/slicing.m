@@ -1,6 +1,8 @@
+% Import needed slice or make a slice from imported data
+
 for i=1:1:MaxFrames
 
-    nameCur = strcat('fort.q',num2str(Frame,'%04.f'),'.h5');
+    nameCur = strcat(filesbasement,num2str(Frame,'%04.f'),'.h5');
 
     attr = h5readatt(nameCur,'/Pid1','Parameters'); % Thread MASTER (0) always outputs its data
     gridno = attr(1);
@@ -25,7 +27,7 @@ for i=1:1:MaxFrames
     if (strcmp(flagslice,'meridional'))
 
         if(isempty(listofproc))
-        fprintf('Going through all cores to find those containing meridional slice of %d m ... \n',slicemeridionalkm); 
+        fprintf('Going through all cores to find threads with meridional slice of %d m ... \n',slicekm); 
         id = 1;
         for ii=1:1:lx
         for j=1:1:ly
@@ -43,7 +45,7 @@ for i=1:1:MaxFrames
         yhigher = ylower + (my-1)*dy;
         zhigher = zlower + (mz)*dz;
 
-        if ((slicemeridionalkm>=ylower) && (slicemeridionalkm<yhigher))
+        if ((slicekm>=ylower) && (slicekm<yhigher))
         namedataset;
         listofproc = [listofproc,id];
         myylower = ylower;
@@ -57,12 +59,12 @@ for i=1:1:MaxFrames
         end
         end
 
-        sliceinID = (slicemeridionalkm-myylower)/dy + 1;
+        sliceinID = (slicekm-myylower)/dy + 1;
 
         if(isempty(listofproc) || isinf(sliceinID) || (floor(sliceinID) ~= sliceinID))
-        error('There is no cell in y direction of %d m \n',slicemeridionalkm);
+        error('There is no cell in y direction of %d m \n',slicekm);
         else
-        %printf('Next cores contain meridional slice of %d m:\n',slicemeridionalkm);
+        %printf('Next cores contain meridional slice of %d m:\n',slicekm);
         listofproc
         end
 
@@ -84,7 +86,7 @@ for i=1:1:MaxFrames
     if (strcmp(flagslice,'zonal'))
 
         if(isempty(listofproc))
-        fprintf('Going through all cores to find those containing zonal slice of %d m ... \n',slicezonalkm);
+        fprintf('Going through all cores to find threads with zonal slice of %d m ... \n',slicekm);
 
         id = 1;
         for ii=1:1:lx
@@ -102,7 +104,7 @@ for i=1:1:MaxFrames
         yhigher = ylower + (my-1)*dy;
         zhigher = zlower + (mz)*dz;
 
-        if ((slicezonalkm>=xlower) && (slicezonalkm<xhigher))
+        if ((slicekm>=xlower) && (slicekm<xhigher))
         listofproc = [listofproc,id];
         myxlower = xlower;
         myxhigher = xhigher;
@@ -115,12 +117,12 @@ for i=1:1:MaxFrames
         end
         end
 
-        sliceinID = (slicezonalkm-myxlower)/dx + 1;
+        sliceinID = (slicekm-myxlower)/dx + 1;
 
         if(isempty(listofproc) || isinf(sliceinID) || (floor(sliceinID) ~= sliceinID))
-        error('There is no cell in x direction of %d m \n',slicezonalkm);
+        error('There is no cell in x direction of %d m \n',slicekm);
         else
-        fprintf('Next cores contain zonal slice of %d m:\n',slicezonalkm);
+        fprintf('Next cores contain zonal slice of %d m:\n',slicekm);
         listofproc
         end
 
@@ -144,7 +146,7 @@ for i=1:1:MaxFrames
 
     if (strcmp(flagslice,'horizontal'))
 
-        cellataltitude = mz*slicehorizontalkm/(mz*dz);
+        cellataltitude = mz*slicekm/(mz*dz);
 
         if(isinf(cellataltitude) || (floor(cellataltitude) ~= cellataltitude))
         error('Error: There is no cell at altitude of %d m \n',cellataltitude);

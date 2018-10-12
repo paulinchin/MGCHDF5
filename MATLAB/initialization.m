@@ -1,7 +1,15 @@
+    if(ouputtype=='v')
+       filesbasement = 'fort.qv'; 
+    elseif(ouputtype=='h')
+       filesbasement = 'fort.qh';
+    elseif(ouputtype=='all')
+       filesbasement = 'fort.q'; 
+    end
+
 try
     % This script should be improved later to read simulation parameters
-attr = h5readatt('fort.q0000.h5','/Pid1','Parameters');
-attr2 = h5readatt('fort.q0001.h5','/Pid1','Parameters');
+attr = h5readatt(strcat(filesbasement,'0000.h5'),'/Pid1','Parameters');
+attr2 = h5readatt(strcat(filesbasement,'0001.h5'),'/Pid1','Parameters');
 
 gridno = attr(1);
 level = attr(2);

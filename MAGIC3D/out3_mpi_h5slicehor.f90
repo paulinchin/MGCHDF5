@@ -80,7 +80,7 @@
     numslice = (/125/)
       
      info = mpi_info_null
-     fname = 'fort.q' &
+     fname = 'fort.qh' &
      & // char(ichar('0') + mod(iframe/1000,10)) &
      & // char(ichar('0') + mod(iframe/100,10)) &
      & // char(ichar('0') + mod(iframe/10,10)) &

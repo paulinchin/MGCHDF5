@@ -1,4 +1,23 @@
-function calcsliceh5(slice,dx,dy,dz,lx,ly,lz,mx,my,mz,flagslice)
+%% This script is to find needed threads to output from MAGIC for vertical slices
+clear all
+clc
+
+% Set the values above as you use in clawez.data:
+dx = 2000;
+dy = 2000;
+dz = 200;
+lx = 10;
+ly = 24;
+lz = 1;
+mx = 20;
+my = 10;
+mz = 1350;
+
+slice = 240000; % y direction
+
+% Set slice direction
+flagslice = 'y'; % Meridional
+%flagsice = 'x'; % Zonal
 
 id = 0; % do not change this
 f = 0; % do not change this
@@ -41,6 +60,3 @@ end
 end
 fprintf('Total number of cores containing this slice is: %d \n',f)
 end
-
-end
-

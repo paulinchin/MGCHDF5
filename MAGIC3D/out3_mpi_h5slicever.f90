@@ -81,7 +81,7 @@
     idarray = (/0,12,36,60,84,108,132,156,180,204,228/)
       
      info = mpi_info_null
-     fname = 'fort.q' &
+     fname = 'fort.qv' &
      & // char(ichar('0') + mod(iframe/1000,10)) &
      & // char(ichar('0') + mod(iframe/100,10)) &
      & // char(ichar('0') + mod(iframe/10,10)) &
