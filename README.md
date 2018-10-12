@@ -33,7 +33,7 @@ Subroutine to restart from needed frame. Note that output used to restart should
 Notes:<b>
   
 In order to use these functions please add them in clawez_mpi.f
-If several different outputs are needed (for example full for every 1 min and slice for every 1 sec) use different conditions in claw3ez_mpi.f for * * if (iframe*nstepout .eq. n) then * *
+If several different outputs are needed (for example full for every 1 min and slice for every 1 sec) use different conditions in claw3ez_mpi.f for *if (iframe*nstepout .eq. n) then*
 <p>
   
 ## Compilation
