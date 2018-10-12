@@ -35,7 +35,7 @@ In order to use these functions please add them in clawez_mpi.f
   
 ## Compilation
 Compilation on Vega assumes changes in Makefile and used modules:<br>
-1. Executable MAGIC should be compiled with next modules which should be loaded on Vega:
+1. Executable MAGIC should be compiled with next modules:
 <p>
 module load szip/intel-compiler/2.1.1<br>
 module load hdf5/intel-mpi/intel-compiler/1.8.19<br>
