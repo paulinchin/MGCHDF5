@@ -39,5 +39,6 @@ module load intel/mpi/64/2018/1.163<br>
 module load intel/compiler/64/2018/18.0.1<br>
 Be sure to remove other compilers before compiling (module rm ......).
 <p>
+  
 2. Makefile change:
 Updated Makefile can be found in /MAGIC3D folder
