@@ -1,6 +1,6 @@
 # MGCHDF5
 
-These are fortran subroutines and MATLAB scripts to work with HDF5 MAGIC3D output.
+These are fortran subroutines and MATLAB scripts to work with HDF5 MAGIC3D output. This README file is for parallel compressed versions.
 
 ## Fortran subroutines<br>
 
@@ -40,8 +40,7 @@ Subroutine to restart from needed frame. Note that output used to restart should
 Compilation on Vega assumes changes in Makefile and used modules:<br>
 1. Executable MAGIC should be compiled with next modules:
 <p>
-module load szip/intel-compiler/2.1.1<br>
-module load hdf5/intel-mpi/intel-compiler/1.8.19<br>
+module load hdf5/intel-mpi/intel-compiler/1.10.3<br>
 module load intel/mpi/64/2018/1.163<br>
 module load intel/compiler/64/2018/18.0.1<br>
 Be sure to remove other compilers before compiling (module rm ......).
