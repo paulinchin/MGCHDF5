@@ -1,6 +1,6 @@
 # MGCHDF5
 
-These are fortran subroutines and MATLAB scripts to work with HDF5 MAGIC3D output. This README file is for parallel compressed versions.
+These are fortran subroutines and MATLAB scripts to work with HDF5 MAGIC3D output. This README file is for parallel compressed versions from MAGIC3D1.10.3 folder.
 
 ## Fortran subroutines<br>
 
