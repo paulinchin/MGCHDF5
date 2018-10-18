@@ -53,6 +53,15 @@ Be sure to remove other compilers before compiling (module rm ......).
 2. Makefile change:
 Updated Makefile can be found in /MAGIC3D folder
 
+<b>NOTE</b>
+Be sure to compile new routines before running Makefile using:<br>
+h5pfc -O3 -xhost -ipo -pthread -c out3_mpi_h5.f90<br>
+h5pfc -O3 -xhost -ipo -pthread -c out3_mpi_h5slicehor.f90<br>
+h5pfc -O3 -xhost -ipo -pthread -c out3_mpi_h5slicever.f90<br>
+h5pfc -O3 -xhost -ipo -pthread -c restart3_mpi_hdf.f90<br>
+
+Because they are written for f90 and are compiled without all other .f routines
+
 ## Matlab script<br>
 New Matlab scripts can import the whole 3D domain (mx,my,mz,q) as it was done for earlier versions, however it may take a lot of time and resources, thus this function is depreciated. New functionality allows importing and working with only particular horizontal (in x or y) and horizontal slices.
 <p>
