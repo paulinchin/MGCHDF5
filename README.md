@@ -53,7 +53,7 @@ Be sure to remove other compilers before compiling (module rm ......).
 2. Makefile change:
 Updated Makefile can be found in /MAGIC3D folder
 
-<b>NOTE</b>
+<b>NOTE</b><br>
 Be sure to compile new routines before running Makefile using:<br>
 h5pfc -O3 -xhost -ipo -pthread -c out3_mpi_h5.f90<br>
 h5pfc -O3 -xhost -ipo -pthread -c out3_mpi_h5slicehor.f90<br>
