@@ -1,0 +1,54 @@
+#!/usr/bin/perl
+
+# This script concatenates files created by output from Clawpack MPI version.
+
+# First check for flags -v, --verbose, -h, --help
+foreach $i (0..$#ARGV) {
+    $verbose = $verbose || index($ARGV[$i],'-v') >= 0;
+    $help =    $help    || index($ARGV[$i],'-h') >= 0;
+}
+
+if ($help) {
+   print "This script concatenates files created ";
+   print "by output from Clawpack MPI version\n\n";
+   print "Flags : \n";
+   print "  -v, --verbose  Prints out list of files to be concatenated.\n";
+   exit 0;
+}
+
+# Open current directory.
+opendir(curr_dir,".");
+
+# Get array of files names that look like fort.q????.??
+@fortfiles = grep(/fort.q\d{4}.\d{2}/,readdir(curr_dir));
+
+# Get subset of array above that looks like fort.q????.00
+# We will extract the unique file names from this list.
+@basefiles = grep(/fort.q\d{4}.00/,@fortfiles);
+
+closedir(curr_dir);
+
+# Iterate over each of the base files.
+foreach (@basefiles) {
+    # Get unique file name of the form fort.q????
+    $bfile = substr($_,0,10);
+
+    # Create list of files with unique name, followed by .?? to concatenate.
+    @list = grep(index($_,$bfile) >= 0,@fortfiles);
+    if (@list > 0) {
+
+       # Print out what we are doing, if user passed in -v or --verbose flags.
+       if ($verbose) {
+          print "Concatenating and removing files \n";
+          grep(print($_."\n"),@list);
+          print "and creating file $bfile\n\n";
+       }
+
+      # Concatenate and remove the files.
+      $catstr = "cat @list > $bfile";
+      !system($catstr) || die "Problem with command\n\n$catstr\n\n ";
+
+      $rmstr = "rm @list";
+      !system($rmstr) || die "Problem with command\n\n$rmstr\n\n ";
+   }
+}

@@ -78,7 +78,7 @@ for i=1:1:MaxFrames
         data = squeeze(tempp(:,sliceinID,:,:));
         datafullset = [datafullset;data];
         end
-        pause
+        
     end    
 
     %-------------- Make zonal (x) slice ----------%      
@@ -220,7 +220,7 @@ for i=1:1:MaxFrames
         end
         
         fprintf('Full 3D domain is loaded\n');
-        pause
+        
     end
     
     

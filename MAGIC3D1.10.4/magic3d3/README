@@ -1,0 +1,39 @@
+-------------------------------------------------------------------------------
+
+   Model for Acoustic-Gravity-wave Interactions and Coupling (MAGIC)
+
+       by Jonathan Snively (2002-2018)
+
+-------------------------------------------------------------------------------
+
+This model is subject to the terms in the license, which is to say that it may 
+be used only with permission and consultation by J. B. Snively. This is not a 
+release version. If "Found", please contact snivelyj@erau.edu.
+
+Please refer to Clawpack 4.2 documentation and license terms.
+
+HDF4 and other libraries needed for output files are included in ./hdf4libs,
+and are subject to their individual license terms.
+
+Two versions are provided: (Files labeled "Classic" or "ThirdOrder")
+Classic uses mwaves=meqn, and is included until the two methods are unified in
+a single Riemann solver. The ThirdOrder method applies a Lax-Liu limiting
+scheme that eliminates the need for the external Clawpack limiting routines.
+It uses only three "f-waves" for the Euler equations, as all limiters are
+applied to the Eigenvector coefficients directly. This method is 15% faster
+and effectively higher resolution. See example claw2ez file for reference on
+settings. In both cases meqn includes the 5 Euler equations, any nspecadv  
+advection equations, and any meqn-5-nspecadv continuity equations.
+
+The code can be used either in cylindrical r-z or Cartesian x-z coordinates.
+These can be selected in setprob.data.
+
+
+To Compile: 
+Edit Makefile to address any compiler-specific needs or library paths. 
+Type "make xclawmpihdf"
+	
+To Run on Vega (324 processors, example case), 
+qsub ./xclaw_launch
+
+

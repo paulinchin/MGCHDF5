@@ -8,9 +8,9 @@ listofproc = [];
                     %-------------- Setup --------------%
                     
 % Set 1 to plots figures
-videooutput = 0;
+videooutput = 1;
 % Set 1 to collect slides for creating a video
-figuresoutput = 0;
+figuresoutput = 1;
 
 % Set what input to expect.
 %ouputtype = 'v'; % Vertical slice (out3ver)
@@ -25,7 +25,7 @@ flagslice = 'meridional'; % constant y slice
 %flagslice = 'full'; % constant y slice
 
 % Set distance of slice from 0 in meters in needed direction
-slicekm = 238000;
+slicekm = 240000;
 
 % Uncomment flags of variable to output
 % Use proposed values or set index (number) of meqn (e.g. 1 - rho)
@@ -39,7 +39,7 @@ flagpar = {'w'};
 initialization
 
 MaxFrames = 900; % Number of Frames
-Frame=132; % Frame to start
+Frame=0; % Frame to start
 
 % Go from frame to frame
 slicing

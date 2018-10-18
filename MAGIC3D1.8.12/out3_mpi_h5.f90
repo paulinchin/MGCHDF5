@@ -34,7 +34,7 @@
      !------------------ Filter variables ---------------!
      double precision, allocatable, target :: data(:,:,:,:)           ! data   
      integer(hsize_t), dimension(4) :: cdims = (/1,1,1,1/) ! chunks data dimensions
-     ! integer, dimension(1:1) :: cd_values                  ! auxiliary data for the filter
+     integer, dimension(1:1) :: cd_values                  ! auxiliary data for the filter
      ! integer(size_t) :: nelmts                             ! number of elements in cd_values
      ! integer :: flags                                      ! bit vector specifying certain general properties of the filter
      ! integer(size_t) :: namelen = 180                      ! anticipated number of characters in name
@@ -53,6 +53,8 @@
      character*20 fname
      common /mpicomm/ mpi_comm_3d, lx, ly, lz
      common /mpi_proc_info/ np, id
+     INTEGER :: szip_options_mask
+     INTEGER :: szip_pixels_per_block
      !---------------------------------------------------!
 
      ! initialize HDF5 fortran interface
@@ -191,7 +193,11 @@
          ! attribute the compression type (GZIP compression)
          ! dcpl: link this property variable with filter
          ! 6: compression rank
-!        call h5pset_deflate_f(dcpl, 6, ierr)
+         call h5pset_deflate_f(dcpl, 6, ierr)
+         
+         !szip_options_mask = H5_SZIP_NN_OM_F
+  		 !szip_pixels_per_block = 16
+         !call H5Pset_szip_f(plist_id, szip_options_mask, szip_pixels_per_block, error)
 
          ! attribute time of allocation of space for data in datasets
          ! h5d_alloc_time_early_f - allocate all space when the dataset is created
@@ -273,7 +279,7 @@
      call h5pcreate_f(h5p_file_access_f, plist_id, ierr)
      call h5pset_fapl_mpio_f(plist_id, mpi_comm_world, info, ierr)
 
-!      call h5pset_deflate_f(plist_id, 6, ierr)
+!     call h5pset_deflate_f(plist_id, 6, ierr)
 
      ! open hdf5 file for current time
      ! filename: filename of current hdf5 file
