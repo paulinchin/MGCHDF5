@@ -1,5 +1,0 @@
-#!/bin/bash
-
-# find . -name "fort.t*" -print
-# echo "fort.q*"
-find . -name "fort.t*" | while read f; do echo $f && b=${f:8:12} && foo=$(printf "fort.q"$b) && echo $foo && cat > $foo *$foo* ; done
