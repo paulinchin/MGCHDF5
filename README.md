@@ -51,7 +51,7 @@ Be sure to remove other compilers before compiling (module rm ......).
 <p>
   
 2. Makefile change:
-Updated Makefile can be found in /MAGIC3D folder
+Updated Makefile can be found in /MAGIC3D1.10.4 folder
 
 <b>NOTE</b><br>
 Be sure to compile new routines before running Makefile using:<br>
