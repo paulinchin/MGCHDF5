@@ -1,8 +1,9 @@
 # MGCHDF5
 
-Fortran subroutines and MATLAB scripts to work with HDF5 MAGIC3D output. This README file is for parallel compressed version from MAGIC3D1.10.4 folder.
+Fortran subroutines and MATLAB scripts to work with HDF5 MAGIC3D output. This README file is for parallel compressed version from MAGIC3Db1.10.4 folder.
 
 <b>Current versions</b>:
+1. MAGIC3Db1.10.4 - parallel output/restart routinres with compression working with HDF5 development branch for MAGIC3D2018b version which is compatible with CLAWPACK 5.5.0<br>
 1. MAGIC3D1.10.4 - parallel output/restart routinres with compression working with HDF5 development branch<br>
 2. MAGIC3D1.8.12 - parallel output/restart routines without compression working with HDF5 versions 1.8.x-1.9.x (depreciated)<p></p>
 
@@ -21,7 +22,15 @@ numslice - set cell number to output<br>
 Output filename format: fort.qhXXXX.h5<br>
 <p>
   
-3. outslicever3 (out3_mpi_h5slicever.f90)<br>
+3. outsliceh (out3_mpi_h5slicehorr.f90)<br>
+Output data for the continuous range of altitudes (e.g. airglow output).<br>
+Set next parameters in out3_mpi_h5slicehorr.f90:<br>
+dimsf(3) - set number of slices to output<br>
+k - set range of grids in "z" direction to output<br>
+Output filename format: fort.qaXXXX.h5<br>
+<p>
+  
+4. outslicever3 (out3_mpi_h5slicever.f90)<br>
 Output data only at altitudes of interest.<br>
 Set next parameters in out3_mpi_h5slicever.f90:<br>
 arraysize<br>
@@ -30,13 +39,13 @@ Both parameters can be found using "calcsliceh5.m" script<br>
 Output filename format: fort.qvXXXX.h5<br>
 <p>
   
-4. restart (restart3_mpi_hdf.f90)<br>
+5. restart (restart3_mpi_hdf.f90)<br>
 Subroutine to restart from needed frame. Note that output used to restart should be output from out3 (out3_mpi_h5.f90) routine
 <p>
 
 <b>Notes</b>:<br>
 1. In order to use these functions please add them in clawez_mpi.f<br>
-2. If several different outputs are needed (for example full for every 1 min and slice for every 1 sec) use different conditions in claw3ez_mpi.f for *if (iframe*nstepout .eq. n) then*
+2. If several different outputs are needed (for example full for every 1 min and slice for every 1 sec) use different conditions in claw3ez_mpi.f for *if (iframe*nstepout .eq. n) then* (updated code with setting flags will be available soon)
 
 <p>
   
