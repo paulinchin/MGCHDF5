@@ -1,6 +1,6 @@
 
 ! =========================================================
-      subroutine outslicever3(maxmx,maxmy,maxmz,meqn,mbc,mx,my,&
+      subroutine outver(maxmx,maxmy,maxmz,meqn,mbc,mx,my,&
      &     mz,xlower,ylower,zlower,dx,dy,dz,q,t,iframe)
 ! =========================================================
 

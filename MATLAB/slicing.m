@@ -4,7 +4,7 @@ for i=1:1:MaxFrames
 
     nameCur = strcat(filesbasement,num2str(Frame,'%04.f'),'.h5');
 
-    attr = h5readatt(nameCur,'/Pid1','Parameters'); % Thread MASTER (0) always outputs its data
+    attr = h5readatt(nameCur,'/Pid0','Parameters'); % Thread MASTER (0) always outputs its data
     gridno = attr(1);
     level = attr(2);
     mx = attr(3);
@@ -13,7 +13,7 @@ for i=1:1:MaxFrames
     dx = attr(9);
     dy = attr(10);
     dz = attr(11);
-    t = attr(12);
+    t = attr(13);
     iframe = attr(13);
     meqn = attr(14);
     lx = attr(15);
@@ -28,36 +28,57 @@ for i=1:1:MaxFrames
 
         if(isempty(listofproc))
         fprintf('Going through all cores to find threads with meridional slice of %d m ... \n',slicekm); 
-        id = 1;
-        for ii=1:1:lx
-        for j=1:1:ly
+        id = 0;
+        
+id = 0; % do not change this
+f = 0; % do not change this
 
-        namedataset = strcat('/Pid',num2str(id));
+fprintf('Output these threads: \n')
 
-        try
-        a = hdf5read(nameCur,namedataset);
+for ii=0:1:lx-1
+for jj=0:1:ly-1
+xlower = ii*(mx)*dx;
+ylower = jj*(my)*dy;
+xhigher = xlower + (mx)*dx;
+yhigher = ylower + (my)*dy;
 
-        attr = h5readatt(nameCur,namedataset,'Parameters');
-        xlower = attr(6);
-        ylower = attr(7);
-        zlower = attr(8);
-        xhigher = xlower + (mx-1)*dx;
-        yhigher = ylower + (my-1)*dy;
-        zhigher = zlower + (mz)*dz;
-
-        if ((slicekm>=ylower) && (slicekm<=yhigher))
-        namedataset;
-        listofproc = [listofproc,id];
-        myylower = ylower;
-        myyhigher = yhigher;
-        end
-
-        catch
-        fprintf('There is no data for thread:  %s \n',namedataset);
-        end            
-        id = id + 1;
-        end
-        end
+if ((slicekm>=ylower) && (slicekm<yhigher))
+%     ylower
+%     slice
+%     yhigher
+myylower = ylower;
+f = f+1;
+listofproc = [listofproc,id];
+%pause
+end
+id = id+1;
+end
+end
+   
+%         for ii=1:1:lx
+%         for j=1:1:ly
+%         namedataset = strcat('/Pid',num2str(id));
+%         try
+%         a = hdf5read(nameCur,namedataset);
+%         attr = h5readatt(nameCur,namedataset,'Parameters');
+%         xlower = attr(6);
+%         ylower = attr(7);
+%         zlower = attr(8);
+%         xhigher = xlower + (mx-1)*dx;
+%         yhigher = ylower + (my-1)*dy;
+%         zhigher = zlower + (mz)*dz;
+%         if ((slicekm>=ylower) && (slicekm<=yhigher))
+%         namedataset;
+%         listofproc = [listofproc,id];
+%         myylower = ylower;
+%         myyhigher = yhigher;
+%         end
+%         catch
+%         fprintf('There is no data for thread:  %s \n',namedataset);
+%         end            
+%         id = id + 1;
+%         end
+%         end
 
         sliceinID = (slicekm-myylower)/dy + 1;
 
@@ -88,34 +109,57 @@ for i=1:1:MaxFrames
         if(isempty(listofproc))
         fprintf('Going through all cores to find threads with zonal slice of %d m ... \n',slicekm);
 
-        id = 1;
-        for ii=1:1:lx
-        for j=1:1:ly
+        id = 0;
+        
+id = 0; % do not change this
+f = 0; % do not change this     
 
-        namedataset = strcat('/Pid',num2str(id));
+for ii=0:1:lx-1
+for jj=0:1:ly-1
+xlower = ii*(mx)*dx;
+ylower = jj*(my)*dy;
+xhigher = xlower + (mx)*dx;
+yhigher = ylower + (my)*dy;
 
-        try       
-        a = hdf5read(nameCur,namedataset);
-        attr = h5readatt(nameCur,namedataset,'Parameters');
-        xlower = attr(6);
-        ylower = attr(7);
-        zlower = attr(8)  ; 
-        xhigher = xlower + (mx-1)*dx;
-        yhigher = ylower + (my-1)*dy;
-        zhigher = zlower + (mz)*dz;
-
-        if ((slicekm>=xlower) && (slicekm<xhigher))
-        listofproc = [listofproc,id];
-        myxlower = xlower;
-        myxhigher = xhigher;
-        end
-
-        catch
-        fprintf('There is no data for thread: %s \n',namedataset);
-        end  
-        id = id + 1;
-        end
-        end
+if ((slicekm>=xlower) && (slicekm<xhigher))
+%     ylower
+%     slice
+%     yhigher
+myxlower = xlower;
+f = f+1;
+listofproc = [listofproc,id];
+%pause
+end
+id = id+1;
+end
+end
+%         for ii=1:1:lx
+%         for j=1:1:ly
+% 
+%         namedataset = strcat('/Pid',num2str(id));
+% 
+%         try       
+%         a = hdf5read(nameCur,namedataset);
+%         attr = h5readatt(nameCur,namedataset,'Parameters');
+%         xlower = attr(6);
+%         ylower = attr(7);
+%         zlower = attr(8)  ; 
+%         xhigher = xlower + (mx-1)*dx;
+%         yhigher = ylower + (my-1)*dy;
+%         zhigher = zlower + (mz)*dz;
+% 
+%         if ((slicekm>=xlower) && (slicekm<xhigher))
+%         listofproc = [listofproc,id];
+%         myxlower = xlower;
+%         myxhigher = xhigher;
+%         end
+% 
+%         catch
+%         fprintf('There is no data for thread: %s \n',namedataset);
+%         end  
+%         id = id + 1;
+%         end
+%         end
 
         sliceinID = (slicekm-myxlower)/dx + 1;
 
@@ -220,10 +264,30 @@ for i=1:1:MaxFrames
         end
         
         fprintf('Full 3D domain is loaded\n');
-        
+        pause
     end
     
-    
+    if (strcmp(flagslice,'fullair'))
+
+        cellataltitude = 1;
+        id = 1;
+        dataset=[];
+        datafullset=[];
+        for ii=1:1:lx
+        for jj=1:1:ly
+        namedataset = strcat('/Pid',num2str(id));
+        tempp = hdf5read(nameCur,namedataset);
+        dataset = [dataset,squeeze(tempp(:,:,1,:))];
+        id = id+1;
+        end
+
+        datafullset = [datafullset;dataset];
+        size(datafullset);
+        dataset=[];
+        end
+        fprintf('Full 3D domain is loaded\n');
+        
+    end
     
     if(figuresoutput)
     plotting
@@ -234,6 +298,6 @@ for i=1:1:MaxFrames
     end
     end
 
-    Frame = Frame + 1;
+    Frame = Frame + 30;
 
 end

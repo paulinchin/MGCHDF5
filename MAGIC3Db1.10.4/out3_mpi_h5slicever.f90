@@ -1,6 +1,6 @@
 
 ! =========================================================
-      subroutine outslicever3(maxmx,maxmy,maxmz,meqn,mbc,mx,my,&
+      subroutine outver(maxmx,maxmy,maxmz,meqn,mbc,mx,my,&
      &     mz,xlower,ylower,zlower,dx,dy,dz,q,t,iframe)
 ! =========================================================
 
@@ -49,7 +49,7 @@
      integer :: rank = 4                                       ! data rank. q is 4D
      integer, allocatable :: idarray(:)
      character(mpi_max_processor_name) hostname
-     dimension q(1-mbc:maxmx+mbc, 1-mbc:maxmy+mbc,1-mbc:maxmz+mbc,meqn)
+     dimension q(meqn,1-mbc:maxmx+mbc, 1-mbc:maxmy+mbc,1-mbc:maxmz+mbc)
      integer(hsize_t), dimension(4) :: dimsf ! data dataset dimensions
      integer :: i,j,k,l,m,info,idd,arraysize,iddd
      character*20 fname
@@ -66,12 +66,12 @@
     dimsf(3) = mz
     dimsf(4) = meqn
     
-    if(id==0) then
-    print*,dimsf(1)
-    print*,dimsf(2)
-    print*,dimsf(3)
-    print*,dimsf(4)
-    end if
+!    if(id==0) then
+!    print*,dimsf(1)
+!    print*,dimsf(2)
+!    print*,dimsf(3)
+!    print*,dimsf(4)
+!    end if
     
     arraysize = 19
     
@@ -79,8 +79,10 @@
     allocate (attr_data(3,arraysize))
     allocate (idarray(arraysize))
     
-    idarray = (/0,5,25,45,65,85,105,125,145,165,185,205,225,245,265,285,305,325,345/)
-      
+    idarray = (/0,10,30,50,70,90,110,130,150, &
+     & 170,190,210,230,250,270,290,310,330, &
+     & 350/)
+    
      info = mpi_info_null
      fname = 'fort.qv' &
      & // char(ichar('0') + mod(iframe/1000,10)) &
@@ -88,8 +90,9 @@
      & // char(ichar('0') + mod(iframe/10,10)) &
      & // char(ichar('0') + mod(iframe,10)) &
      & // '.h5'
-              
-      ! Check data for very small values and 
+     
+           
+      ! Check data for very small values and
       do k=1,mz
       do j=1,my
       do i=1,mx
@@ -97,16 +100,17 @@
       !if (abs(q(i,j,k,m)) .lt. 1d-99) then
       !q(i,j,k,m) = 0.d0
       !end if
-      data(i,j,k,m) = q(i,j,k,m)
+      data(i,j,k,m) = q(m,i,j,k)
       end do
       end do
       end do
       end do
       
+      
     cdims(1) = dimsf(1)
     cdims(2) = dimsf(2)
     cdims(3) = dimsf(3)
-	cdims(4) = meqn
+    cdims(4) = dimsf(4)
 	  
      ! create datatype for the attribute
  	 ! Copy existing datatype
@@ -167,7 +171,7 @@
          ! attribute the compression type (GZIP compression)
          ! dcpl: link this property variable with filter
          ! 6: compression rank
-!        call h5pset_deflate_f(dcpl, 6, ierr)
+         call h5pset_deflate_f(dcpl, 6, ierr)
 
          ! attribute time of allocation of space for data in datasets
          ! h5d_alloc_time_early_f - allocate all space when the dataset is created
@@ -283,11 +287,12 @@
      ! dataset_name: dataset which belongs to this processor
      ! dataset_id: identifier for dataset
      !call h5dopen_f(file_id, dataset_name, dataset_id, ierr, memd)
+     
      call h5dopen_f(file_id, dataset_name, dataset_id, ierr)
 	 call h5dget_space_f(dataset_id,filespace,ierr)
      !call H5Screate_simple_f(rank, dimsf, memspace, ierr)
      
-     if ((id /= i-1).AND.(any(idarray/=id))) then
+     if (id /= idarray(i)) then
      !call h5sselect_none_f(memspace, ierr)
      call h5sselect_none_f(filespace, ierr)    
      end if
@@ -315,6 +320,7 @@
 
 	 deallocate(data)
 	 deallocate(attr_data)
+	 deallocate(idarray)
 		
 	  ! close fortran interface
       call h5close_f(ierr)

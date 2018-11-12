@@ -22,6 +22,13 @@ if(strcmp(flagslice,'horizontal'))
     ylab = 'Horizontal distance (x) in m';
 end
 
+if(strcmp(flagslice,'horizontalslice'))
+    xaxis = 0:dy:my*ly*dy;
+    yaxis = 0:dx:mx*lx*dx;
+    xlab = 'Horizontal distance (y) in m';
+    ylab = 'Horizontal distance (x) in m';
+end
+
 % Define what to plot
 
 if any(strcmp(flagpar,'u'))
@@ -126,7 +133,20 @@ end
 %    T=(gammam-1).*((energy-kinetic)./(rho.*Rm));
 %    if Frame==0 T0=T; end;
 %    Tp=T-T0;
-        
+
+
+    if any(strcmp(flagpar,'temp'))
+   rho2=datafullset(:,:,1);
+   energy=datafullset(:,:,5);
+   momnt=datafullset(:,:,2:4);
+   momnt2=momnt.*momnt;
+   kinetic=0.5*sum(momnt2,3)./rho2;
+   T=(gammam-1).*((energy-kinetic)./(rho2.*Rm));
+   if Frame==0 T0=T; end;
+   outvar=T-T0;
+   titlevar = ['Temperature pert at time=', num2str(t),' s'];
+    end
+
         figure('pos',[500 500 600 600])
         imagesc(xaxis,yaxis,outvar')
         axis xy
@@ -134,6 +154,6 @@ end
         ylabel(ylab,'FontSize',14);
         title(titlevar,'FontSize',14);
         colorbar 
-        
+         
                 
         datafullset = [];

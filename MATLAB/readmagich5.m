@@ -13,26 +13,31 @@ videooutput = 1;
 figuresoutput = 1;
 
 % Set what input to expect.
-%ouputtype = 'v'; % Vertical slice (out3ver)
+ouputtype = 'v'; % Vertical slice (out3ver)
 %ouputtype = 'h'; % Horizontal slice (out3hor)
-ouputtype = 'all'; % Full 3D domain (out3)
+%ouputtype = 'all'; % Full 3D domain (out3)
+%ouputtype = 'air'; % Full 3D domain (out3)
 
 % Uncomment one of the flags for needed slice:
-%flagslice = 'zonal'; % constant x slice
-flagslice = 'meridional'; % constant y slice
+flagslice = 'zonal'; % constant x slice
+%flagslice = 'meridional'; % constant y slice
 %flagslice = 'horizontal'; % constant z slice
 %flagslice = 'horizontalslice'; % constant z from horizontal sliced output
 %flagslice = 'full'; % constant y slice
+%flagslice = 'fullair'; % constant y slice
+
 
 % Set distance of slice from 0 in meters in needed direction
-slicekm = 240000;
+slicekm = 600000;
+
+%fstruct = dir('*_CAN_*.csv')
 
 % Uncomment flags of variable to output
 % Use proposed values or set index (number) of meqn (e.g. 1 - rho)
 % If other variables are needed - correct plotting.m
 % If scaled velocities are needed - add s to the end of variable (e.g. 'ws')
 % Currently among possible outputs:
-% {'u','v','w','rhop','rhorp','doxp','dnit2p','dox2p'};
+% {'u','v','w','rhop','rhorp','doxp','dnit2p','dox2p','temp'};
 flagpar = {'w'};
 
 % Do initialization

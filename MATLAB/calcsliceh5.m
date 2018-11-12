@@ -2,7 +2,7 @@
 clear all
 clc
 
-% Set the values above as you use in clawez.data:
+% Nepal
 dx = 1000;
 dy = 2000;
 dz = 250;
@@ -13,11 +13,33 @@ mx = 990;
 my = 300;
 mz = 1800;
 
-slice = 150000; % y direction
+% Tohoku Acoustics
+% dx = 1000;
+% dy = 1000;
+% dz = 250;
+% lx = 15;
+% ly = 24;
+% lz = 1;
+% mx = 1200;
+% my = 1200;
+% mz = 1000;
+
+% Palu
+% dx = 1000;
+% dy = 1000;
+% dz = 1000;
+% lx = 15;
+% ly = 24;
+% lz = 1;
+% mx = 600;
+% my = 600;
+% mz = 1000;
+
+slice = 300000; % y direction
 
 % Set slice direction
 flagslice = 'y'; % Meridional
-%flagsice = 'x'; % Zonal
+%flagslice = 'x'; % Zonal
 
 id = 0; % do not change this
 f = 0; % do not change this

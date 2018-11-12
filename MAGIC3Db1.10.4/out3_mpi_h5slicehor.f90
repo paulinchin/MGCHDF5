@@ -1,6 +1,5 @@
-
 ! =========================================================
-      subroutine outslicever3(maxmx,maxmy,maxmz,meqn,mbc,mx,my,&
+      subroutine outslicehor3(maxmx,maxmy,maxmz,meqn,mbc,mx,my,&
      &     mz,xlower,ylower,zlower,dx,dy,dz,q,t,iframe)
 ! =========================================================
 
@@ -10,6 +9,8 @@
 ! The effectiveness of compression/writing/reading of hdf5 files
 ! depends on choice of chunk sizes. Some tradeoff should be done
 ! Current version uses a simple algorithm to define chunks sizes
+
+
 
      use mpi
      use hdf5
@@ -21,6 +22,7 @@
      integer(hid_t) :: file_id       ! file identifier
      integer(hid_t) :: dataset_id    ! dataset identifier
      integer(hid_t) :: dataspace_id  ! dataspace identifier
+     integer(hid_t) :: filespace
      double precision, allocatable :: attr_data(:,:)   ! data to write
      double precision, dimension(17) :: attr_datacur
      INTEGER(HSIZE_T), DIMENSION(1) :: adims = (/17/) ! Attribute dimension
@@ -29,7 +31,6 @@
      INTEGER(HID_T) :: aspace_id ! Attribute dataspace identifier
      INTEGER(HID_T) :: atype_id ! Attribute dataspace identifier
      INTEGER :: arank = 1 ! Attribute rank
-     integer(hid_t) :: filespace
      !---------------------------------------------------! 
 
      !------------------ Filter variables ---------------!
@@ -47,11 +48,12 @@
      character(len=3) :: c                                     ! dataset name for specific rank
      character(len=10) :: dataset_name
      integer :: rank = 4                                       ! data rank. q is 4D
-     integer, allocatable :: idarray(:)
      character(mpi_max_processor_name) hostname
-     dimension q(1-mbc:maxmx+mbc, 1-mbc:maxmy+mbc,1-mbc:maxmz+mbc,meqn)
+     dimension q(meqn, 1-mbc:maxmx+mbc, 1-mbc:maxmy+mbc,&
+     &               1-mbc:maxmz+mbc)
      integer(hsize_t), dimension(4) :: dimsf ! data dataset dimensions
-     integer :: i,j,k,l,m,info,idd,arraysize,iddd
+     integer :: i,j,k,l,m,a,info,idd,numberofslices
+     integer, allocatable :: numslice(:)
      character*20 fname
      common /mpicomm/ mpi_comm_3d, lx, ly, lz
      common /mpi_proc_info/ np, id
@@ -60,10 +62,12 @@
      ! initialize HDF5 fortran interface
     call h5open_f(ierr)
     
+    numberofslices = 1
+    
     ! define size of q for every core
     dimsf(1) = mx
     dimsf(2) = my
-    dimsf(3) = mz
+    dimsf(3) = numberofslices
     dimsf(4) = meqn
     
     if(id==0) then
@@ -73,67 +77,61 @@
     print*,dimsf(4)
     end if
     
-    arraysize = 19
-    
     allocate (data(dimsf(1),dimsf(2),dimsf(3),dimsf(4)))
-    allocate (attr_data(3,arraysize))
-    allocate (idarray(arraysize))
-    
-    idarray = (/0,5,25,45,65,85,105,125,145,165,185,205,225,245,265,285,305,325,345/)
+    allocate (attr_data(3,np))
+    allocate (numslice(numberofslices))
+    numslice = (/1000/)
       
      info = mpi_info_null
-     fname = 'fort.qv' &
+     fname = 'fort.qh' &
      & // char(ichar('0') + mod(iframe/1000,10)) &
      & // char(ichar('0') + mod(iframe/100,10)) &
      & // char(ichar('0') + mod(iframe/10,10)) &
      & // char(ichar('0') + mod(iframe,10)) &
      & // '.h5'
-              
-      ! Check data for very small values and 
-      do k=1,mz
+
+      ! Set which mz to output by setting k
+      ! if you need several horizontal slices - change numberofslices
+      ! and set in numslice mz of needed slices
+      do k=1,numberofslices
+      a = numslice(k)
       do j=1,my
       do i=1,mx
       do m=1,meqn
-      !if (abs(q(i,j,k,m)) .lt. 1d-99) then
-      !q(i,j,k,m) = 0.d0
-      !end if
-      data(i,j,k,m) = q(i,j,k,m)
+	data(i,j,1,m) = q(m,i,j,a)
       end do
       end do
       end do
       end do
-      
-    cdims(1) = dimsf(1)
-    cdims(2) = dimsf(2)
-    cdims(3) = dimsf(3)
-	cdims(4) = meqn
-	  
+          
      ! create datatype for the attribute
  	 ! Copy existing datatype
  	 ! H5T_NATIVE_CHARACTER - copy this datatype
      ! atype_id - copy datatype to this variable
 	 
-    
+          
     ! have id 0 creates hdf5 data layout and write all attributes
     if (id == 0) then
     
     call h5tcopy_f(h5t_native_double,atype_id,ierr)
     
+    ! This is a simple chunking of data
+    cdims(1) = dimsf(1)
+    cdims(2) = dimsf(2)
+    cdims(3) = dimsf(3)
+    cdims(4) = meqn
+        
     ! Calculate xlower, ylower, zlower for every processor
      idd = 1
-     iddd = 0
      k = 0 ! Current MAGIC does not support paralleling in vertical direction
      ! Only MASTER saves attributes, so it calculates xlow,ylow,zlow by itself
      do i=0,lx-1
      do j=0,ly-1
      !do kk=0,lz-1
-     if (any(idarray==iddd)) then
         attr_data(1,idd) = i*mx*dx
         attr_data(2,idd) = j*my*dy
         attr_data(3,idd) = k*mz*dz
         idd = idd + 1
-     end if
-     iddd = iddd + 1
      !end do
      end do
      end do
@@ -167,11 +165,12 @@
          ! attribute the compression type (GZIP compression)
          ! dcpl: link this property variable with filter
          ! 6: compression rank
-!        call h5pset_deflate_f(dcpl, 6, ierr)
+         call h5pset_deflate_f(dcpl, 6, ierr)
 
          ! attribute time of allocation of space for data in datasets
          ! h5d_alloc_time_early_f - allocate all space when the dataset is created
          call h5pset_alloc_time_f(dcpl, h5d_alloc_time_early_f, ierr)
+         
          
         attr_datacur(1) = gridno
         attr_datacur(2) = level
@@ -188,13 +187,14 @@
         attr_datacur(16) = ly
         attr_datacur(17) = lz
         
-   do i=1,arraysize
+! create name for every dataset
+   do i=1,np
 
         attr_datacur(6) = attr_data(1,i) ! xlower
         attr_datacur(7) = attr_data(2,i) ! ylower
         attr_datacur(8) = attr_data(3,i) ! zlower
 
-         write(c,"(i0)") idarray(i)
+         write(c,"(i0)") i
          dataset_name = "Pid" // trim(c)
 
          ! create dataset for this processor (based on id)
@@ -221,10 +221,11 @@
          call h5dclose_f(dataset_id, ierr)
 
    enddo
+   
+   		 call h5tclose_f(atype_id, ierr)
+   		 
          ! close access to the dataspace for attribute
          call h5sclose_f(aspace_id, ierr)
-         
-         call h5tclose_f(atype_id, ierr)
          
          ! close the dataspace
          call h5sclose_f(dataspace_id, ierr)
@@ -238,7 +239,7 @@
    
       ! mpi barrier to make sure everything is synched
       call mpi_barrier(mpi_comm_world, ierr)
-     
+
       ! Now every processor is writing its own attributes and data to its dataset
 
       ! setup file access property variable with parallel i/o access
@@ -247,32 +248,23 @@
       ! info - info regarding file access patterns and file system specifications
      call h5pcreate_f(h5p_file_access_f, plist_id, ierr)
      call h5pset_fapl_mpio_f(plist_id, mpi_comm_world, info, ierr)
-
-!      call h5pset_deflate_f(plist_id, 6, ierr)
-
-     ! open hdf5 file for current time
-     ! filename: filename of current hdf5 file
-     ! h5f_acc_rdwr_f: open to read and write
-     ! file_id: file identifier
-     ! plist_id: file access property list
+     
      call h5fopen_f(fname, h5f_acc_rdwr_f, file_id, ierr, plist_id)
-  
+     
      ! close the property list
-     call h5pclose_f(plist_id, ierr)
-   
+     call h5pclose_f(plist_id, ierr) 
+     
      ! create properties variable
      ! h5p_dataset_xfer_f: property for raw data transfer
      call h5pcreate_f(h5p_dataset_xfer_f, plist_id, ierr)
      ! set collective mpio model
      ! h5fd_mpio_collective_f: collective is usually faster (OK to use it)
-     ! call h5pset_dxpl_mpio_f(plist_id, h5fd_mpio_collective_f, ierr)
      call h5pset_dxpl_mpio_f(plist_id, h5fd_mpio_collective_f, ierr)
+
+	 ! Parallel compression requires collective writing
+     do i=1,np
      
-     
-     ! Parallel compression requires collective writing
-     do i=1,arraysize
-     
-     write(c,"(i0)") idarray(i)
+     write(c,"(i0)") i
      dataset_name = "Pid" // trim(c)
      
      !call h5pcreate_f(H5P_DATASET_ACCESS_F, memd, ierr)
@@ -287,7 +279,7 @@
 	 call h5dget_space_f(dataset_id,filespace,ierr)
      !call H5Screate_simple_f(rank, dimsf, memspace, ierr)
      
-     if ((id /= i-1).AND.(any(idarray/=id))) then
+     if (id /= i-1) then
      !call h5sselect_none_f(memspace, ierr)
      call h5sselect_none_f(filespace, ierr)    
      end if
@@ -304,20 +296,19 @@
      call h5dwrite_f(dataset_id, h5t_native_double, data, & 
      & dimsf, ierr, file_space_id = filespace, xfer_prp = plist_id)
 	 
+     !call h5pclose_f(memd, ierr)
+     !call h5sclose_f(memspace, ierr)
+     !
      call h5dclose_f(dataset_id,ierr)
      
      enddo
-      
-     call h5sclose_f(filespace, ierr)
      
+     call h5sclose_f(filespace, ierr)
      call h5pclose_f(plist_id, ierr)
      call h5fclose_f(file_id, ierr)
+  
+     ! close fortran interface
+     call h5close_f(ierr)
 
-	 deallocate(data)
-	 deallocate(attr_data)
-		
-	  ! close fortran interface
-      call h5close_f(ierr)
-		
       return
       end

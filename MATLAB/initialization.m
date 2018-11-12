@@ -1,15 +1,21 @@
     if(ouputtype=='v')
+        % Vertical slice at 1 particular longitude/latitude
        filesbasement = 'fort.qv'; 
     elseif(ouputtype=='h')
+        % Horizontal slice at 1 particular altitude
        filesbasement = 'fort.qh';
     elseif(ouputtype=='all')
+        % Full 3D input
        filesbasement = 'fort.q'; 
+    elseif(ouputtype=='air')
+        % Range of horizontal slices for airglow calculation
+       filesbasement = 'fort.qa';    
     end
 
 try
     % This script should be improved later to read simulation parameters
 attr = h5readatt(strcat(filesbasement,'0000.h5'),'/Pid1','Parameters');
-attr2 = h5readatt(strcat(filesbasement,'0001.h5'),'/Pid1','Parameters');
+%attr2 = h5readatt(strcat(filesbasement,'0001.h5'),'/Pid1','Parameters');
 
 gridno = attr(1);
 level = attr(2);
@@ -25,7 +31,7 @@ meqn = attr(14);
 lx = attr(15);
 ly = attr(16);
 lz = attr(17);
-dt = attr2(12)-attr(12);
+dt = 0.2 %attr2(12)-attr(12);
 
 disp('---------- Simulation info -----------')
 fprintf('Number of cells in the domain: %dx, %dy, %dz\n',mx*lx,my*ly,mz*lz);
@@ -35,6 +41,13 @@ fprintf('Number of processors used: %d (%d,%d,%d)\n',lx*ly*lz,lx,ly,lz);
 fprintf('Time step: %d s\n',dt);
 disp('--------------------------------------')
 
+
+%-------------- Load from file .  --------------%
+zzz = hdf5read('fort.qv0000.h5','/Pid0');
+% Tn = squeeze(zzz(1,1,:,6));
+
+rho=pf(:,5)*1000;
+rhon = squeeze(zzz(1,1,:,1));
 %-------------- Load MSIS profile --------------%
         %if (~exist('pf','var'))
         disp('Reading atmospheric profile...');
@@ -82,6 +95,11 @@ disp('--------------------------------------')
           scale=(rho./rho(1)).^(1/2);
           rho0=rho;
 
+          scalem = repmat(scale,1,size(datafullset(:,3)))';
+          gammam=repmat(gamma,1,size(datafullset(:,3)))';
+          Rm=repmat(R,1,size(datafullset(:,3)))';
+          
+    
         if(strcmp(flagslice,'meridional'))
         rhoa = repmat(rho0',mx*lx,1);
         doxa = repmat(dox0',mx*lx,1);
@@ -101,3 +119,12 @@ disp('--------------------------------------')
 catch
     fprintf('fort.q0000.h5 and fort.q0001.h5 used to define simulation parameters were not found \n');
 end
+
+%%
+tempold = hdf5read('fort.qv0604OLD.h5','/Pid190');
+tempnew = hdf5read('fort.qv0604.h5','/Pid190');
+
+old = squeeze(tempold(:,1,:,4)./tempold(:,1,:,1));
+new = squeeze(tempnew(:,1,:,4)./tempnew(:,1,:,1));
+
+imagesc(new-old)
