@@ -7,6 +7,10 @@ Fortran subroutines and MATLAB scripts to work with HDF5 MAGIC3D output. This RE
 1. MAGIC3D1.10.4 - parallel output/restart routinres with compression working with HDF5 development branch<br>
 2. MAGIC3D1.8.12 - parallel output/restart routines without compression working with HDF5 versions 1.8.x-1.9.x (depreciated)<p></p>
 
+<b>Important note</b>:<br>
+Even though MAGIC3Db1.10.4 version uses new indexing (m,i,j,k), the output routines still saves data as (i,j,k,m) in order to be compatible with previously written Matlab routines.
+
+
 ## Fortran subroutines<br>
 
 1. out3 (out3_mpi_h5.f90)<br>
