@@ -15,7 +15,7 @@
 try
     % This script should be improved later to read simulation parameters
 attr = h5readatt(strcat(filesbasement,'0000.h5'),'/Pid1','Parameters');
-%attr2 = h5readatt(strcat(filesbasement,'0001.h5'),'/Pid1','Parameters');
+attr2 = h5readatt(strcat(filesbasement,'0001.h5'),'/Pid1','Parameters');
 
 gridno = attr(1);
 level = attr(2);
@@ -31,7 +31,7 @@ meqn = attr(14);
 lx = attr(15);
 ly = attr(16);
 lz = attr(17);
-dt = 0.2 %attr2(12)-attr(12);
+dt = attr2(12)-attr(12);
 
 disp('---------- Simulation info -----------')
 fprintf('Number of cells in the domain: %dx, %dy, %dz\n',mx*lx,my*ly,mz*lz);
