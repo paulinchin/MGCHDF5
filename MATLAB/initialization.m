@@ -119,12 +119,3 @@ rhon = squeeze(zzz(1,1,:,1));
 catch
     fprintf('fort.q0000.h5 and fort.q0001.h5 used to define simulation parameters were not found \n');
 end
-
-%%
-tempold = hdf5read('fort.qv0604OLD.h5','/Pid190');
-tempnew = hdf5read('fort.qv0604.h5','/Pid190');
-
-old = squeeze(tempold(:,1,:,4)./tempold(:,1,:,1));
-new = squeeze(tempnew(:,1,:,4)./tempnew(:,1,:,1));
-
-imagesc(new-old)
