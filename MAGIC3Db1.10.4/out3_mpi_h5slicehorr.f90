@@ -145,11 +145,6 @@
          ! dcpl: link this property variable with filter
          ! 6: compression rank
          call h5pset_deflate_f(dcpl, 6, ierr)
-         
-         ! Close previous call and open calls below to use SZIP compression
-         !szip_options_mask = H5_SZIP_NN_OM_F
-         !szip_pixels_per_block = 16
-         !CALL H5Pset_szip_f(dcpl, szip_options_mask, szip_pixels_per_block, ierr)
 
          ! attribute time of allocation of space for data in datasets
          ! h5d_alloc_time_early_f - allocate all space when the dataset is created
@@ -222,9 +217,6 @@
    
       ! mpi barrier to make sure everything is synched
       call mpi_barrier(mpi_comm_3d, ierr)
-      !
-      
-      ! Now every processor is writing its own attributes and data to its dataset
 
       ! setup file access property variable with parallel i/o access
       ! plist_id: property variable
@@ -232,7 +224,6 @@
       ! info - info regarding file access patterns and file system specifications
      call h5pcreate_f(h5p_file_access_f, plist_id, ierr)
      call h5pset_fapl_mpio_f(plist_id, mpi_comm_3d, info, ierr)
-     ! mpi_comm_world
      
      ! open hdf5 file for current time
      ! filename: filename of current hdf5 file
@@ -248,7 +239,7 @@
      ! h5p_dataset_xfer_f: property for raw data transfer
      call h5pcreate_f(h5p_dataset_xfer_f, plist_id, ierr)
      ! set collective mpio model
-     ! h5fd_mpio_collective_f: collective is usually faster (OK to use it)
+     ! h5fd_mpio_collective_f: collective is usually faster
      call h5pset_dxpl_mpio_f(plist_id, h5fd_mpio_collective_f, ierr)
      
      ! Parallel compression requires collective writing
@@ -274,7 +265,6 @@
      ! data: data by itself
      ! dimsf: dimensions of data we want to write to file
      ! xfer_prp = plist_id: data transfer property variable
-     !call h5dwrite_f(dataset_id, h5t_native_double, data, dimsf, ierr, &   
      call h5dwrite_f(dataset_id, h5t_native_double, data, & 
      & dimsf, ierr, file_space_id = filespace, xfer_prp = plist_id)
 	 

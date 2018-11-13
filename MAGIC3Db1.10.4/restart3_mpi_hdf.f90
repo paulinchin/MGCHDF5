@@ -35,8 +35,6 @@
      character(len=3) :: c                                     ! dataset name for specific rank
      character(len=10) :: dataset_name
      integer :: rank = 4                                       ! data rank. q is 4D
- !    character(mpi_max_processor_name) hostname
- !    dimension q(1-mbc:maxmx+mbc, 1-mbc:maxmy+mbc,1-mbc:maxmz+mbc,meqn)
      dimension q(meqn,1-mbc:mx+mbc, 1-mbc:my+mbc,1-mbc:mz+mbc)
      integer(hsize_t), dimension(4) :: dimsf ! data dataset dimensions
      integer :: i,j,k,l,m,info,idd
@@ -66,7 +64,6 @@
     allocate (data_out(dimsf(1),dimsf(2),dimsf(3),dimsf(4)))
     
 !	Set name for the file you start from
-
     fname = 'fort.q0600.h5'
 !    'fort.q' &
 !     &     // char(ichar('0') + mod(iframe/1000,10)) &
@@ -108,7 +105,7 @@
      ! h5p_dataset_xfer_f: property for raw data transfer
      call h5pcreate_f(h5p_dataset_xfer_f, plist_id, ierr)
      ! set collective mpio model
-     ! h5fd_mpio_collective_f: collective is usually faster (OK to use it)
+     ! h5fd_mpio_collective_f: collective is usually faster
      call h5pset_dxpl_mpio_f(plist_id, h5fd_mpio_collective_f, ierr)
      
      ! write data to dataset

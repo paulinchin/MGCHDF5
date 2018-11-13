@@ -35,6 +35,7 @@
      !------------------ Filter variables ---------------!
      double precision, allocatable, target :: data(:,:,:,:)           ! data   
      integer(hsize_t), dimension(4) :: cdims = (/1,1,1,1/) ! chunks data dimensions
+     ! Uncomment below if SZIP is needed
      ! integer, dimension(1:1) :: cd_values                  ! auxiliary data for the filter
      ! integer(size_t) :: nelmts                             ! number of elements in cd_values
      ! integer :: flags                                      ! bit vector specifying certain general properties of the filter
@@ -83,8 +84,7 @@
      & // char(ichar('0') + mod(iframe/10,10)) &
      & // char(ichar('0') + mod(iframe,10)) &
      & // '.h5'
-     
-           
+       
       ! Check data for very small values and
       do k=1,mz
       do j=1,my
@@ -96,18 +96,11 @@
       end do
       end do
       
-      
     cdims(1) = dimsf(1)
     cdims(2) = dimsf(2)
     cdims(3) = dimsf(3)
     cdims(4) = dimsf(4)
-	  
-     ! create datatype for the attribute
- 	 ! Copy existing datatype
- 	 ! H5T_NATIVE_CHARACTER - copy this datatype
-     ! atype_id - copy datatype to this variable
-	 
-    
+
     ! have id 0 creates hdf5 data layout and write all attributes
     if (id == 0) then
     
@@ -241,8 +234,6 @@
      call h5pcreate_f(h5p_file_access_f, plist_id, ierr)
      call h5pset_fapl_mpio_f(plist_id, mpi_comm_world, info, ierr)
 
-!      call h5pset_deflate_f(plist_id, 6, ierr)
-
      ! open hdf5 file for current time
      ! filename: filename of current hdf5 file
      ! h5f_acc_rdwr_f: open to read and write
@@ -258,7 +249,6 @@
      call h5pcreate_f(h5p_dataset_xfer_f, plist_id, ierr)
      ! set collective mpio model
      ! h5fd_mpio_collective_f: collective is usually faster (OK to use it)
-     ! call h5pset_dxpl_mpio_f(plist_id, h5fd_mpio_collective_f, ierr)
      call h5pset_dxpl_mpio_f(plist_id, h5fd_mpio_collective_f, ierr)
      
      
@@ -267,22 +257,15 @@
      
      write(c,"(i0)") idarray(i)
      dataset_name = "Pid" // trim(c)
-     
-     !call h5pcreate_f(H5P_DATASET_ACCESS_F, memd, ierr)
-	 !call h5pset_chunk_cache_f(memd,12421,16*1024*1024,0.75,ierr)
 
      ! open dataset (each processor opens its own dataset)
      ! file_id: hdf5 file identifier
      ! dataset_name: dataset which belongs to this processor
-     ! dataset_id: identifier for dataset
-     !call h5dopen_f(file_id, dataset_name, dataset_id, ierr, memd)
-     
+     ! dataset_id: identifier for dataset    
      call h5dopen_f(file_id, dataset_name, dataset_id, ierr)
 	 call h5dget_space_f(dataset_id,filespace,ierr)
-     !call H5Screate_simple_f(rank, dimsf, memspace, ierr)
      
      if (id /= idarray(i)) then
-     !call h5sselect_none_f(memspace, ierr)
      call h5sselect_none_f(filespace, ierr)    
      end if
      
@@ -292,9 +275,6 @@
      ! data: data by itself
      ! dimsf: dimensions of data we want to write to file
      ! xfer_prp = plist_id: data transfer property variable
-     !call h5dwrite_f(dataset_id, h5t_native_double, data, dimsf, ierr, &
-      !mem_space_id=memspace, file_space_id=filespace, xfer_prp = plist_id)
-    
      call h5dwrite_f(dataset_id, h5t_native_double, data, & 
      & dimsf, ierr, file_space_id = filespace, xfer_prp = plist_id)
 	 

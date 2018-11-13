@@ -8,9 +8,6 @@
 ! Please note that:
 ! The effectiveness of compression/writing/reading of hdf5 files
 ! depends on choice of chunk sizes. Some tradeoff should be done
-! Current version uses a simple algorithm to define chunks sizes
-
-
 
      use mpi
      use hdf5
@@ -36,6 +33,7 @@
      !------------------ Filter variables ---------------!
      double precision, allocatable, target :: data(:,:,:,:)           ! data   
      integer(hsize_t), dimension(4) :: cdims = (/1,1,1,1/) ! chunks data dimensions
+     ! Next variable should be opened when SZIP is used
      ! integer, dimension(1:1) :: cd_values                  ! auxiliary data for the filter
      ! integer(size_t) :: nelmts                             ! number of elements in cd_values
      ! integer :: flags                                      ! bit vector specifying certain general properties of the filter
@@ -103,12 +101,6 @@
       end do
       end do
       end do
-          
-     ! create datatype for the attribute
- 	 ! Copy existing datatype
- 	 ! H5T_NATIVE_CHARACTER - copy this datatype
-     ! atype_id - copy datatype to this variable
-	 
           
     ! have id 0 creates hdf5 data layout and write all attributes
     if (id == 0) then
@@ -265,21 +257,15 @@
      
      write(c,"(i0)") i
      dataset_name = "Pid" // trim(c)
-     
-     !call h5pcreate_f(H5P_DATASET_ACCESS_F, memd, ierr)
-	 !call h5pset_chunk_cache_f(memd,12421,16*1024*1024,0.75,ierr)
 
      ! open dataset (each processor opens its own dataset)
      ! file_id: hdf5 file identifier
      ! dataset_name: dataset which belongs to this processor
      ! dataset_id: identifier for dataset
-     !call h5dopen_f(file_id, dataset_name, dataset_id, ierr, memd)
      call h5dopen_f(file_id, dataset_name, dataset_id, ierr)
 	 call h5dget_space_f(dataset_id,filespace,ierr)
-     !call H5Screate_simple_f(rank, dimsf, memspace, ierr)
      
      if (id /= i-1) then
-     !call h5sselect_none_f(memspace, ierr)
      call h5sselect_none_f(filespace, ierr)    
      end if
      
@@ -288,16 +274,10 @@
      ! h5t_native_integer: type of data in memory which we want to write to file
      ! data: data by itself
      ! dimsf: dimensions of data we want to write to file
-     ! xfer_prp = plist_id: data transfer property variable
-     !call h5dwrite_f(dataset_id, h5t_native_double, data, dimsf, ierr, &
-      !mem_space_id=memspace, file_space_id=filespace, xfer_prp = plist_id)
-    
+     ! xfer_prp = plist_id: data transfer property variable   
      call h5dwrite_f(dataset_id, h5t_native_double, data, & 
      & dimsf, ierr, file_space_id = filespace, xfer_prp = plist_id)
 	 
-     !call h5pclose_f(memd, ierr)
-     !call h5sclose_f(memspace, ierr)
-     !
      call h5dclose_f(dataset_id,ierr)
      
      enddo

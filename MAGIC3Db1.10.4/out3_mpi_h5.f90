@@ -6,6 +6,7 @@
 
 ! Routine to save compressed chunked output from MAGIC
 ! Note current filter is based on GZIP compression
+! Old indexing for output is preserved
 
      use mpi
      use hdf5
@@ -142,6 +143,8 @@
          ! dcpl: link this property variable with filter
          ! 6: compression rank
          call h5pset_deflate_f(dcpl, 6, ierr)
+           
+         ! Uncomment below and comment previous line to use SZIP compression
          
          !szip_options_mask = H5_SZIP_NN_OM_F
          !szip_pixels_per_block = 16
@@ -150,7 +153,6 @@
          ! attribute time of allocation of space for data in datasets
          ! h5d_alloc_time_early_f - allocate all space when the dataset is created
          call h5pset_alloc_time_f(dcpl, h5d_alloc_time_early_f, ierr)
-         !call h5pset_alloc_time_f(dcpl, H5D_ALLOC_TIME_INCR_f, ierr)
          
         attr_datacur(1) = gridno
         attr_datacur(2) = level
@@ -228,7 +230,6 @@
       ! info - info regarding file access patterns and file system specifications
      call h5pcreate_f(h5p_file_access_f, plist_id, ierr)
      call h5pset_fapl_mpio_f(plist_id, mpi_comm_3d, info, ierr)
-     ! mpi_comm_world
      
      ! open hdf5 file for current time
      ! filename: filename of current hdf5 file
@@ -244,7 +245,7 @@
      ! h5p_dataset_xfer_f: property for raw data transfer
      call h5pcreate_f(h5p_dataset_xfer_f, plist_id, ierr)
      ! set collective mpio model
-     ! h5fd_mpio_collective_f: collective is usually faster (OK to use it)
+     ! h5fd_mpio_collective_f: collective is usually faster
      call h5pset_dxpl_mpio_f(plist_id, h5fd_mpio_collective_f, ierr)
      
      ! Parallel compression requires collective writing
@@ -253,19 +254,14 @@
      write(c,"(i0)") i
      dataset_name = "Pid" // trim(c)
      
-     !call h5pcreate_f(H5P_DATASET_ACCESS_F, memd, ierr)
-	 !call h5pset_chunk_cache_f(memd,12421,16*1024*1024,0.75,ierr)
-
      ! open dataset (each processor opens its own dataset)
      ! file_id: hdf5 file identifier
      ! dataset_name: dataset which belongs to this processor
      ! dataset_id: identifier for dataset
      call h5dopen_f(file_id, dataset_name, dataset_id, ierr)
 	 call h5dget_space_f(dataset_id,filespace,ierr)
-     !call H5Screate_simple_f(rank, dimsf, memspace, ierr)
      
      if (id /= i-1) then
-     !call h5sselect_none_f(memspace, ierr)
      call h5sselect_none_f(filespace, ierr)    
      end if
      
