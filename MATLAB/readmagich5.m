@@ -30,8 +30,6 @@ flagslice = 'zonal'; % constant x slice
 % Set distance of slice from 0 in meters in needed direction
 slicekm = 600000;
 
-%fstruct = dir('*_CAN_*.csv')
-
 % Uncomment flags of variable to output
 % Use proposed values or set index (number) of meqn (e.g. 1 - rho)
 % If other variables are needed - correct plotting.m
@@ -51,9 +49,9 @@ slicing
 
     if(videooutput)
         % tag filename. For outstanding video quality - use ('video.avi','Uncompressed AVI')
-%         v = VideoWriter('video2.mp4','MPEG-4');
-%         v.FrameRate = 25;
-%         open(v);
-%         writeVideo(v,mov(1:end));
-%         close(v);
+        v = VideoWriter('TOHACthermo.mp4','MPEG-4');
+        v.FrameRate = 25;
+        open(v);
+        writeVideo(v,mov(1:end));
+        close(v);
     end

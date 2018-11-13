@@ -66,13 +66,6 @@
     dimsf(3) = mz
     dimsf(4) = meqn
     
-!    if(id==0) then
-!    print*,dimsf(1)
-!    print*,dimsf(2)
-!    print*,dimsf(3)
-!    print*,dimsf(4)
-!    end if
-    
     arraysize = 19
     
     allocate (data(dimsf(1),dimsf(2),dimsf(3),dimsf(4)))
@@ -97,9 +90,6 @@
       do j=1,my
       do i=1,mx
       do m=1,meqn
-      !if (abs(q(i,j,k,m)) .lt. 1d-99) then
-      !q(i,j,k,m) = 0.d0
-      !end if
       data(i,j,k,m) = q(m,i,j,k)
       end do
       end do
@@ -126,11 +116,10 @@
     ! Calculate xlower, ylower, zlower for every processor
      idd = 1
      iddd = 0
-     k = 0 ! Current MAGIC does not support paralleling in vertical direction
      ! Only MASTER saves attributes, so it calculates xlow,ylow,zlow by itself
      do i=0,lx-1
      do j=0,ly-1
-     !do kk=0,lz-1
+     do k=0,lz-1
      if (any(idarray==iddd)) then
         attr_data(1,idd) = i*mx*dx
         attr_data(2,idd) = j*my*dy
@@ -138,7 +127,7 @@
         idd = idd + 1
      end if
      iddd = iddd + 1
-     !end do
+     end do
      end do
      end do
     

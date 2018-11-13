@@ -84,8 +84,6 @@
      call h5pcreate_f(h5p_file_access_f, plist_id, ierr)
      call h5pset_fapl_mpio_f(plist_id, mpi_comm_3d, info, ierr)
 
-!      call h5pset_deflate_f(plist_id, 6, ierr)
-
      ! open hdf5 file for current time
      ! filename: filename of current hdf5 file
      ! h5f_acc_rdwr_f: open to read and write
@@ -99,8 +97,6 @@
      ! create the dataset names based on mpi rank
      write(c,"(i0)") id + 1
      dataset_name = "Pid" // trim(c)
-     
-     ! print*,dataset_name
      
      ! open dataset (each processor opens its own dataset)
      ! file_id: hdf5 file identifier
