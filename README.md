@@ -87,5 +87,5 @@ New Matlab scripts can import the whole 3D domain (mx,my,mz,q) as it was done fo
   The script allows working with all 3 types of outputs (out3, out3ver, out3hor)<br>
   The script allows retrieving only particular variables (in current version: 'u','v','w','rhop','rhorp','doxp','dnit2p','dox2p')<br>
   The script allows make plots and video output<br>
-  5. plotting.m - this routine calculates needed variables, does or does not make plots
+  5. plotting.m - this routine calculates needed variables, does or does not make plots<br>
   6. afterframeh5.m - to calculate and plot airglow (based on afterframe.m)
