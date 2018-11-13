@@ -43,49 +43,19 @@ xhigher = xlower + (mx)*dx;
 yhigher = ylower + (my)*dy;
 
 if ((slicekm>=ylower) && (slicekm<yhigher))
-%     ylower
-%     slice
-%     yhigher
 myylower = ylower;
 f = f+1;
 listofproc = [listofproc,id];
-%pause
 end
 id = id+1;
 end
 end
-   
-%         for ii=1:1:lx
-%         for j=1:1:ly
-%         namedataset = strcat('/Pid',num2str(id));
-%         try
-%         a = hdf5read(nameCur,namedataset);
-%         attr = h5readatt(nameCur,namedataset,'Parameters');
-%         xlower = attr(6);
-%         ylower = attr(7);
-%         zlower = attr(8);
-%         xhigher = xlower + (mx-1)*dx;
-%         yhigher = ylower + (my-1)*dy;
-%         zhigher = zlower + (mz)*dz;
-%         if ((slicekm>=ylower) && (slicekm<=yhigher))
-%         namedataset;
-%         listofproc = [listofproc,id];
-%         myylower = ylower;
-%         myyhigher = yhigher;
-%         end
-%         catch
-%         fprintf('There is no data for thread:  %s \n',namedataset);
-%         end            
-%         id = id + 1;
-%         end
-%         end
 
         sliceinID = (slicekm-myylower)/dy + 1;
 
         if(isempty(listofproc) || isinf(sliceinID) || (floor(sliceinID) ~= sliceinID))
         error('There is no cell in y direction of %d m \n',slicekm);
         else
-        %printf('Next cores contain meridional slice of %d m:\n',slicekm);
         listofproc
         end
 
@@ -122,44 +92,13 @@ xhigher = xlower + (mx)*dx;
 yhigher = ylower + (my)*dy;
 
 if ((slicekm>=xlower) && (slicekm<xhigher))
-%     ylower
-%     slice
-%     yhigher
 myxlower = xlower;
 f = f+1;
 listofproc = [listofproc,id];
-%pause
 end
 id = id+1;
 end
 end
-%         for ii=1:1:lx
-%         for j=1:1:ly
-% 
-%         namedataset = strcat('/Pid',num2str(id));
-% 
-%         try       
-%         a = hdf5read(nameCur,namedataset);
-%         attr = h5readatt(nameCur,namedataset,'Parameters');
-%         xlower = attr(6);
-%         ylower = attr(7);
-%         zlower = attr(8)  ; 
-%         xhigher = xlower + (mx-1)*dx;
-%         yhigher = ylower + (my-1)*dy;
-%         zhigher = zlower + (mz)*dz;
-% 
-%         if ((slicekm>=xlower) && (slicekm<xhigher))
-%         listofproc = [listofproc,id];
-%         myxlower = xlower;
-%         myxhigher = xhigher;
-%         end
-% 
-%         catch
-%         fprintf('There is no data for thread: %s \n',namedataset);
-%         end  
-%         id = id + 1;
-%         end
-%         end
 
         sliceinID = (slicekm-myxlower)/dx + 1;
 
@@ -267,7 +206,7 @@ end
         pause
     end
     
-    if (strcmp(flagslice,'fullair'))
+    if (strcmp(flagslice,'air'))
 
         cellataltitude = 1;
         id = 1;
@@ -286,7 +225,7 @@ end
         dataset=[];
         end
         fprintf('Full 3D domain is loaded\n');
-        
+        afterframemy
     end
     
     if(figuresoutput)
@@ -298,6 +237,6 @@ end
     end
     end
 
-    Frame = Frame + 30;
+    Frame = Frame + 1;
 
 end

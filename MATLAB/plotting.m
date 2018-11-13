@@ -119,20 +119,6 @@ end
 %    dox3=permute(dox3,[3 2 1]).*(dox+dox2+dnit2);
 %    if Frame==0 dox30=dox3; end;
 %    dox3p=(dox3-dox30);
-%    
-%    % temperature
-%    rho2=data(:,1);
-%    energy=data(:,5);
-%    momnt=data(:,2:4);
-%    energy=reshape(energy,mz,my,mx);
-%    momnt2=momnt.*momnt;
-%    kinetic=0.5*sum(momnt2,2)./rho2;
-%    kinetic=reshape(kinetic,mz,my,mx);
-%    kinetic=permute(kinetic,[3 2 1]);
-%    energy=permute(energy,[3 2 1]);
-%    T=(gammam-1).*((energy-kinetic)./(rho.*Rm));
-%    if Frame==0 T0=T; end;
-%    Tp=T-T0;
 
 
     if any(strcmp(flagpar,'temp'))

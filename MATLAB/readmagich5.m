@@ -24,7 +24,7 @@ flagslice = 'zonal'; % constant x slice
 %flagslice = 'horizontal'; % constant z slice
 %flagslice = 'horizontalslice'; % constant z from horizontal sliced output
 %flagslice = 'full'; % constant y slice
-%flagslice = 'fullair'; % constant y slice
+%flagslice = 'air'; % constant y slice
 
 
 % Set distance of slice from 0 in meters in needed direction
