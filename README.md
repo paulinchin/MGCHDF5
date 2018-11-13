@@ -1,15 +1,14 @@
 # MGCHDF5
 
-Fortran subroutines and MATLAB scripts to work with HDF5 MAGIC3D output. This README file is for parallel compressed version from MAGIC3Db1.10.4 folder.
+Fortran subroutines and MATLAB scripts to work with HDF5 MAGIC3D output. This README file is for parallel compressed version from MAGIC3Db1.10.4 version.
 
 <b>Current versions</b>:
-1. MAGIC3Db1.10.4 - parallel output/restart routinres with compression working with HDF5 development branch for MAGIC3D2018b version which is compatible with CLAWPACK 5.5.0<br>
-1. MAGIC3D1.10.4 - parallel output/restart routinres with compression working with HDF5 development branch<br>
+1. MAGIC3Db1.10.4 - parallel output/restart routines with compression working with HDF5 development branch for MAGIC3D2018b version which is compatible with CLAWPACK 5.5.0<br>
+1. MAGIC3D1.10.4 - parallel output/restart routines with compression working with HDF5 development branch<br>
 2. MAGIC3D1.8.12 - parallel output/restart routines without compression working with HDF5 versions 1.8.x-1.9.x (depreciated)<p></p>
 
 <b>Important note</b>:<br>
-Even though MAGIC3Db1.10.4 version uses new indexing (m,i,j,k), the output routines still saves data as (i,j,k,m) in order to be compatible with previously written Matlab routines.
-
+Even though MAGIC3D2018b version uses new indexing (m,i,j,k), the output routines still saves data as (i,j,k,m) in order to be compatible with Matlab routines.
 
 ## Fortran subroutines<br>
 
@@ -49,7 +48,7 @@ Subroutine to restart from needed frame. Note that output used to restart should
 
 <b>Notes</b>:<br>
 1. In order to use these functions please add them in clawez_mpi.f<br>
-2. If several different outputs are needed (for example full for every 1 min and slice for every 1 sec) use different conditions in claw3ez_mpi.f for *if (iframe*nstepout .eq. n) then* (updated code with setting flags will be available soon)
+2. If several different outputs are needed (for example full output for every 1 min and slice for every 1 sec) use different conditions in claw3ez_mpi.f for *if (iframe*nstepout .eq. n) then* (updated code with setting flags will be available soon).
 
 <p>
   
