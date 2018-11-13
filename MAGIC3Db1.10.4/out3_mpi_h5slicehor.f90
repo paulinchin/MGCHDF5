@@ -68,13 +68,6 @@
     dimsf(3) = numberofslices
     dimsf(4) = meqn
     
-    if(id==0) then
-    print*,dimsf(1)
-    print*,dimsf(2)
-    print*,dimsf(3)
-    print*,dimsf(4)
-    end if
-    
     allocate (data(dimsf(1),dimsf(2),dimsf(3),dimsf(4)))
     allocate (attr_data(3,np))
     allocate (numslice(numberofslices))

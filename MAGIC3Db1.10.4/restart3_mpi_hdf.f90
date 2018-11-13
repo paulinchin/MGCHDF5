@@ -72,7 +72,7 @@
 !     &     // char(ichar('0') + mod(iframe,10)) &
 !     &     // '.h5'
 
-!    write(*,*) 'Restart from ', fname
+    write(*,*) 'Restart from ', fname
 	
       ! setup file access property variable with parallel i/o access
       ! plist_id: property variable
