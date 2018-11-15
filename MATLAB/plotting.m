@@ -134,7 +134,7 @@ end
     end
 
         figure('pos',[500 500 600 600])
-        imagesc(xaxis,yaxis,outvar')
+        imagesc(xaxis,yaxis,outvar)
         axis xy
         xlabel(xlab,'FontSize',14);
         ylabel(ylab,'FontSize',14);
