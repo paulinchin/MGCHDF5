@@ -26,6 +26,7 @@ flagslice = 'zonal'; % constant x slice
 %flagslice = 'full'; % constant y slice
 %flagslice = 'air'; % constant y slice
 
+geminioutput = 1;
 
 % Set distance of slice from 0 in meters in needed direction
 slicekm = 600000;
@@ -49,7 +50,7 @@ slicing
 
     if(videooutput)
         % tag filename. For outstanding video quality - use ('video.avi','Uncompressed AVI')
-        v = VideoWriter('TOHACthermo.mp4','MPEG-4');
+        v = VideoWriter('NepSim2.mp4','MPEG-4');
         v.FrameRate = 25;
         open(v);
         writeVideo(v,mov(1:end));

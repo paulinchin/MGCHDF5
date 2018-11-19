@@ -236,6 +236,10 @@ end
     it = it +1;
     end
     end
+    
+    if(geminioutput)
+    geminioutput
+    end
 
     Frame = Frame + 1;
 

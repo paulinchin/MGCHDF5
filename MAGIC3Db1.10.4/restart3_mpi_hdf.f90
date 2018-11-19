@@ -56,10 +56,10 @@
     info = mpi_info_null
     
     ! define size of q for every core
-    dimsf(1) = meqn
-    dimsf(2) = mx
-    dimsf(3) = my
-    dimsf(4) = mz     
+    dimsf(1) = mx
+    dimsf(2) = my
+    dimsf(3) = mz
+    dimsf(4) = meqn     
     
     allocate (data_out(dimsf(1),dimsf(2),dimsf(3),dimsf(4)))
     
@@ -121,7 +121,7 @@
      do k = 1,mz
      do j = 1,my
      do i = 1,mx
-     q(m,i,j,k) = data_out(m,i,j,k)
+     q(m,i,j,k) = data_out(i,j,k,m)
      end do
      end do
      end do
