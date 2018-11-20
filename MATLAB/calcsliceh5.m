@@ -55,12 +55,8 @@ xhigher = xlower + (mx/lx)*dx;
 yhigher = ylower + (my/ly)*dy;
 
 if ((slice>=ylower) && (slice<yhigher))
-%     ylower
-%     slice
-%     yhigher
 f = f+1;
-id
-%pause
+id+1
 end
 id = id+1;
 end
@@ -80,10 +76,12 @@ xhigher = xlower + (mx/lx)*dx;
 yhigher = ylower + (my/ly)*dy;
 if ((slice>=xlower) && (slice<xhigher))
 f = f+1;
-id
+id+1
 end
 id = id+1;
 end
 end
 fprintf('Total number of cores containing this slice is: %d \n',f)
 end
+
+fprintf('Do not forget to output id=1 (MASTER): %d \n',f)

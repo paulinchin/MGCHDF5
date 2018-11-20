@@ -50,9 +50,9 @@ slicing
 
     if(videooutput)
         % tag filename. For outstanding video quality - use ('video.avi','Uncompressed AVI')
-        v = VideoWriter('NepSim2.mp4','MPEG-4');
-        v.FrameRate = 25;
-        open(v);
-        writeVideo(v,mov(1:end));
-        close(v);
+%         v = VideoWriter('name.mp4','MPEG-4');
+%         v.FrameRate = 25;
+%         open(v);
+%         writeVideo(v,mov(1:end));
+%         close(v);
     end

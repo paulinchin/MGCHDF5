@@ -73,9 +73,9 @@
     allocate (attr_data(3,arraysize))
     allocate (idarray(arraysize))
     
-    idarray = (/0,10,30,50,70,90,110,130,150, &
-     & 170,190,210,230,250,270,290,310,330, &
-     & 350/)
+    idarray = (/1,11,31,51,71,91,111,131,151, &
+     & 171,191,211,231,251,271,291,311,331, &
+     & 351/)
     
      info = mpi_info_null
      fname = 'fort.qv' &
@@ -265,7 +265,7 @@
      call h5dopen_f(file_id, dataset_name, dataset_id, ierr)
 	 call h5dget_space_f(dataset_id,filespace,ierr)
      
-     if (id /= idarray(i)) then
+     if (id /= (idarray(i)-1)) then
      call h5sselect_none_f(filespace, ierr)    
      end if
      
