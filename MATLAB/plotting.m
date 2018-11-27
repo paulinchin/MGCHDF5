@@ -140,6 +140,6 @@ end
         ylabel(ylab,'FontSize',14);
         title(titlevar,'FontSize',14);
         colorbar 
-         
+         pause
                 
         datafullset = [];

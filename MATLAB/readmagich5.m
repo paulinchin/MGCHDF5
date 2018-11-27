@@ -1,6 +1,6 @@
 %%
 close all
-%clear all
+clear all
 clc
 it=1;
 listofproc = [];
@@ -13,23 +13,23 @@ videooutput = 1;
 figuresoutput = 1;
 
 % Set what input to expect.
-ouputtype = 'v'; % Vertical slice (out3ver)
+%ouputtype = 'v'; % Vertical slice (out3ver)
 %ouputtype = 'h'; % Horizontal slice (out3hor)
-%ouputtype = 'all'; % Full 3D domain (out3)
+ouputtype = 'all'; % Full 3D domain (out3)
 %ouputtype = 'air'; % Full 3D domain (out3)
 
 % Uncomment one of the flags for needed slice:
-flagslice = 'zonal'; % constant x slice
+%flagslice = 'zonal'; % constant x slice
 %flagslice = 'meridional'; % constant y slice
 %flagslice = 'horizontal'; % constant z slice
 %flagslice = 'horizontalslice'; % constant z from horizontal sliced output
-%flagslice = 'full'; % constant y slice
+flagslice = 'full'; % constant y slice
 %flagslice = 'air'; % constant y slice
 
 geminioutput = 1;
 
 % Set distance of slice from 0 in meters in needed direction
-slicekm = 600000;
+slicekm = 85000;
 
 % Uncomment flags of variable to output
 % Use proposed values or set index (number) of meqn (e.g. 1 - rho)
