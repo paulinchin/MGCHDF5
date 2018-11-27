@@ -26,7 +26,7 @@ numslice - set cell number to output<br>
 Output filename format: fort.qhXXXX.h5<br>
 <p>
   
-3. out3a (out3_mpi_h5slicehorr.f90)<br>
+3. out3a (out3_mpi_h5sliceair.f90)<br>
 Output data for the continuous range of altitudes (e.g. airglow output).<br>
 Set next parameters in out3_mpi_h5slicehorr.f90:<br>
 dimsf(3) - set number of slices to output<br>
@@ -71,6 +71,7 @@ Be sure to compile new routines before running Makefile using:<br>
 h5pfc -O3 -xhost -ipo -pthread -c out3_mpi_h5.f90<br>
 h5pfc -O3 -xhost -ipo -pthread -c out3_mpi_h5slicehor.f90<br>
 h5pfc -O3 -xhost -ipo -pthread -c out3_mpi_h5slicever.f90<br>
+h5pfc -O3 -xhost -ipo -pthread -c out3_mpi_h5sliceair.f90<br>
 h5pfc -O3 -xhost -ipo -pthread -c restart3_mpi_hdf.f90<br>
 Because they are written for f90 and are compiled without all other .f routines
 
