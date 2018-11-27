@@ -4,9 +4,9 @@ Fortran subroutines and MATLAB scripts to work with HDF5 MAGIC3D output. This RE
 
 <b>Current versions</b>:
 1. MAGIC3Dc1.10.4 - parallel output/restart routines with compression working with HDF5 development branch for MAGIC3D2018b version which is compatible with CLAWPACK 5.5.0<br>
-1. MAGIC3Db1.10.4 - parallel output/restart routines with compression working with HDF5 development branch for MAGIC3D2018b version which is compatible with CLAWPACK 5.5.0 (depreciated)<br>
-1. MAGIC3D1.10.4 - parallel output/restart routines with compression working with HDF5 development branch which is compatible with CLAWPACK < 5.5.0 (depreciated)<br>
-
+2. MAGIC3Db1.10.4 - parallel output/restart routines with compression working with HDF5 development branch for MAGIC3D2018b version which is compatible with CLAWPACK 5.5.0 (depreciated)<br>
+3. MAGIC3D1.10.4 - parallel output/restart routines with compression working with HDF5 development branch which is compatible with CLAWPACK < 5.5.0 (depreciated)<br>
+3. MAGIC2D - parallel output/restart routines for 2D version of MAGIC with compression working with HDF5 development branch which is compatible with CLAWPACK < 5.5.0 <br>
 
 <b>Important note</b>:<br>
 Even though MAGIC3D2018b version uses new indexing (m,i,j,k), the output routines still saves data as (i,j,k,m) in order to be compatible with Matlab routines.
