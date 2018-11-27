@@ -3,9 +3,10 @@
 Fortran subroutines and MATLAB scripts to work with HDF5 MAGIC3D output. This README file is for parallel compressed version from MAGIC3Db1.10.4 version.
 
 <b>Current versions</b>:
-1. MAGIC3Db1.10.4 - parallel output/restart routines with compression working with HDF5 development branch for MAGIC3D2018b version which is compatible with CLAWPACK 5.5.0<br>
-1. MAGIC3D1.10.4 - parallel output/restart routines with compression working with HDF5 development branch<br>
-2. MAGIC3D1.8.12 - parallel output/restart routines without compression working with HDF5 versions 1.8.x-1.9.x (depreciated)<p></p>
+1. MAGIC3Dc1.10.4 - parallel output/restart routines with compression working with HDF5 development branch for MAGIC3D2018b version which is compatible with CLAWPACK 5.5.0<br>
+1. MAGIC3Db1.10.4 - parallel output/restart routines with compression working with HDF5 development branch for MAGIC3D2018b version which is compatible with CLAWPACK 5.5.0 (depreciated)<br>
+1. MAGIC3D1.10.4 - parallel output/restart routines with compression working with HDF5 development branch which is compatible with CLAWPACK < 5.5.0 (depreciated)<br>
+
 
 <b>Important note</b>:<br>
 Even though MAGIC3D2018b version uses new indexing (m,i,j,k), the output routines still saves data as (i,j,k,m) in order to be compatible with Matlab routines.
@@ -17,7 +18,7 @@ Output full 3D domain of all q to hdf5 format file<br>
 Output filename format: fort.qXXXX.h5<br>
 <p>
   
-2. outslicehor3 (out3_mpi_h5slicehor.f90)<br>
+2. out3h (out3_mpi_h5slicehor.f90)<br>
 Output data only at altitudes of interest.<br>
 Set next parameters in out3_mpi_h5slicehor.f90:<br>
 numberofslices - set number of slices to output<br>
@@ -25,7 +26,7 @@ numslice - set cell number to output<br>
 Output filename format: fort.qhXXXX.h5<br>
 <p>
   
-3. outsliceh (out3_mpi_h5slicehorr.f90)<br>
+3. out3a (out3_mpi_h5slicehorr.f90)<br>
 Output data for the continuous range of altitudes (e.g. airglow output).<br>
 Set next parameters in out3_mpi_h5slicehorr.f90:<br>
 dimsf(3) - set number of slices to output<br>
@@ -33,7 +34,7 @@ k - set range of grids in "z" direction to output<br>
 Output filename format: fort.qaXXXX.h5<br>
 <p>
   
-4. outslicever3 (out3_mpi_h5slicever.f90)<br>
+4. out3v (out3_mpi_h5slicever.f90)<br>
 Output data only at altitudes of interest.<br>
 Set next parameters in out3_mpi_h5slicever.f90:<br>
 arraysize<br>
@@ -74,7 +75,10 @@ h5pfc -O3 -xhost -ipo -pthread -c restart3_mpi_hdf.f90<br>
 Because they are written for f90 and are compiled without all other .f routines
 
 ## Matlab script<br>
-New Matlab scripts can import the whole 3D domain (mx,my,mz,q) as it was done for earlier versions, however it may take a lot of time and resources, thus this function is depreciated. New functionality allows importing and working with only particular horizontal (in x or y) and horizontal slices.
+<b>NOTE</b><br>
+THere are 2 sets of Matlab scripts: MAGIC3Dc1.10.4 works with MATLABc1.10.4. MAGIC3Db1.10.4 and MAGIC3D1.10.4 work with MATLAB.
+
+Matlab scripts can import the whole 3D domain (mx,my,mz,q) as it was done for earlier versions, however it may take a lot of time and resources, thus this function is depreciated. New functionality allows importing and working with only particular horizontal (in x or y) and horizontal slices.
 <p>
   <b>Current scripts </b><br>
   1. calcsliceh5.m - calculates which threads should be output when out3ver output subroutine is used<br>
