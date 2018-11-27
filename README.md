@@ -76,7 +76,7 @@ Because they are written for f90 and are compiled without all other .f routines
 
 ## Matlab script<br>
 <b>NOTE</b><br>
-THere are 2 sets of Matlab scripts: MAGIC3Dc1.10.4 works with MATLABc1.10.4. MAGIC3Db1.10.4 and MAGIC3D1.10.4 work with MATLAB.
+There are 2 sets of Matlab scripts: MAGIC3Dc1.10.4 works with MATLABc1.10.4. MAGIC3Db1.10.4 and MAGIC3D1.10.4 work with MATLAB.
 
 Matlab scripts can import the whole 3D domain (mx,my,mz,q) as it was done for earlier versions, however it may take a lot of time and resources, thus this function is depreciated. New functionality allows importing and working with only particular horizontal (in x or y) and horizontal slices.
 <p>
