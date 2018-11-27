@@ -215,7 +215,7 @@ end
         dataset=[];
         end
         fprintf('Full 3D domain is loaded\n');
-        afterframemy
+        afterframeh5
     end
     
     if(figuresoutput)

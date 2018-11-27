@@ -7,8 +7,8 @@ mx = 1200;
 my = 1200;
 
 %Plot position (grid points)
-x = 1:1:1200;
-y = 1:1:1200;
+x = domain(1)+dx:dx:domain(4);
+y = domain(2)+dy:dy:domain(5);
 minX=1; 
 maxX=1200;
 minY=1;
