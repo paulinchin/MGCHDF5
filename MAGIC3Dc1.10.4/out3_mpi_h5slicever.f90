@@ -1,15 +1,9 @@
-
 ! =========================================================
       subroutine out3v(maxmx,maxmy,maxmz,meqn,mbc,mx,my,&
      &     mz,xlower,ylower,zlower,dx,dy,dz,q,t,iframe)
 ! =========================================================
 
 ! Routine to save compressed chunked output from MAGIC !
-
-! Please note that:
-! The effectiveness of compression/writing/reading of hdf5 files
-! depends on choice of chunk sizes. Some tradeoff should be done
-! Current version uses a simple algorithm to define chunks sizes
 
      use mpi
      use hdf5
@@ -34,15 +28,7 @@
       parameter   (nDim = 3) 
 
      !------------------ Filter variables ---------------!
-     double precision, allocatable, target :: data(:,:,:,:)           ! data   
      integer(hsize_t), dimension(4) :: cdims = (/1,1,1,1/) ! chunks data dimensions
-     ! Uncomment below if SZIP is needed
-     ! integer, dimension(1:1) :: cd_values                  ! auxiliary data for the filter
-     ! integer(size_t) :: nelmts                             ! number of elements in cd_values
-     ! integer :: flags                                      ! bit vector specifying certain general properties of the filter
-     ! integer(size_t) :: namelen = 180                      ! anticipated number of characters in name
-     ! character(len=180) :: name                            ! name of the filter
-     ! integer :: filter_id                                  ! filter identification number
      !---------------------------------------------------!
 
      !------------------ miscellaneous ------------------!
@@ -51,9 +37,11 @@
      integer :: rank = 4                                       ! data rank. q is 4D
      integer, allocatable :: idarray(:)
      character(mpi_max_processor_name) hostname
-     dimension q(meqn,1-mbc:maxmx+mbc, 1-mbc:maxmy+mbc,1-mbc:maxmz+mbc), mtotal(nDim)
+     dimension q(meqn, 1-mbc:maxmx+mbc, 1-mbc:maxmy+mbc,&
+	 &               1-mbc:maxmz+mbc), mtotal(nDim)
      integer(hsize_t), dimension(4) :: dimsf ! data dataset dimensions
-     integer :: i,j,k,l,m,info,idd,arraysize,iddd
+     integer :: i,j,k,l,m,info,idd,arraysize
+	 real*8 :: ngrids_out
      character*20 fname
      common /mpicomm/ mpi_comm_3d, lx, ly, lz, mtotal, mstart
      common /mpi_proc_info/ np, id
@@ -61,16 +49,16 @@
 
      ! initialize HDF5 fortran interface
     call h5open_f(ierr)
+    ngrids_out = 1.d0
     
     ! define size of q for every core
-    dimsf(1) = mx
-    dimsf(2) = my
-    dimsf(3) = mz
-    dimsf(4) = meqn
+    dimsf(1) = meqn
+    dimsf(2) = mx
+    dimsf(3) = my
+    dimsf(4) = mz
     
     arraysize = 19
     
-    allocate (data(dimsf(1),dimsf(2),dimsf(3),dimsf(4)))
     allocate (idarray(arraysize))
     
     idarray = (/1,11,31,51,71,91,111,131,151, &
@@ -84,17 +72,6 @@
      & // char(ichar('0') + mod(iframe/10,10)) &
      & // char(ichar('0') + mod(iframe,10)) &
      & // '.h5'
-       
-      ! Check data for very small values and
-      do k=1,mz
-      do j=1,my
-      do i=1,mx
-      do m=1,meqn
-      data(i,j,k,m) = q(m,i,j,k)
-      end do
-      end do
-      end do
-      end do
       
     cdims(1) = dimsf(1)
     cdims(2) = dimsf(2)
@@ -271,7 +248,8 @@
      ! data: data by itself
      ! dimsf: dimensions of data we want to write to file
      ! xfer_prp = plist_id: data transfer property variable
-     call h5dwrite_f(dataset_id, h5t_native_double, data, & 
+     call h5dwrite_f(dataset_id, h5t_native_double, q(meqn,&
+     & 1:maxmx, 1:maxmy, 1:maxmz),& 
      & dimsf, ierr, file_space_id = filespace, xfer_prp = plist_id)
 	 
      call h5dclose_f(dataset_id,ierr)
@@ -283,7 +261,7 @@
      call h5pclose_f(plist_id, ierr)
      call h5fclose_f(file_id, ierr)
 
-	 deallocate(data)
+	 !deallocate(data)
 	 deallocate(idarray)
 		
 	  ! close fortran interface

@@ -26,25 +26,25 @@
      INTEGER :: arank = 1 ! Attribute rank
      integer(hid_t) :: filespace, memspace, memd
      !---------------------------------------------------! 
+	 
+      parameter   (nDim = 3)
 
      !------------------ Filter variables ---------------!
-     !double precision, allocatable, target :: data(:,:,:,:)           ! data   
-     double precision, allocatable :: data(:,:,:,:)           ! data   
      integer(hsize_t), dimension(4) :: cdims = (/1,1,1,1/) ! chunks data dimensions
      !INTEGER :: szip_options_mask
      !INTEGER :: szip_pixels_per_block
      !---------------------------------------------------!
      
-      parameter   (nDim = 3)
-      
      !------------------ miscellaneous ------------------!
      character(len=3) :: c                                     ! dataset name for specific rank
      character(len=10) :: dataset_name
      integer :: rank = 4                                       ! data rank. q is 4D
      character(mpi_max_processor_name) hostname
-     dimension q(meqn,1-mbc:maxmx+mbc, 1-mbc:maxmy+mbc,1-mbc:maxmz+mbc), mtotal(nDim)
+     dimension q(meqn, 1-mbc:maxmx+mbc, 1-mbc:maxmy+mbc,&
+	 &               1-mbc:maxmz+mbc), mtotal(nDim)
      integer(hsize_t), dimension(4) :: dimsf ! data dataset dimensions
      integer :: i,j,k,l,m,info,idd
+	 real*8 :: ngrids_out
      character*20 fname
      common /mpicomm/ mpi_comm_3d, lx, ly, lz, mtotal, mstart
      common /mpi_proc_info/ np, id
@@ -52,15 +52,13 @@
 
      ! initialize HDF5 fortran interface
     call h5open_f(ierr)
-    ngrids_out = 1
+    ngrids_out = 1.d0
     
     ! define size of q for every core
-    dimsf(1) = mx
-    dimsf(2) = my
-    dimsf(3) = mz
-    dimsf(4) = meqn
-    
-    allocate (data(dimsf(1),dimsf(2),dimsf(3),dimsf(4)))
+    dimsf(1) = meqn
+    dimsf(2) = mx
+    dimsf(3) = my
+    dimsf(4) = mz
       
      info = mpi_info_null
      
@@ -71,16 +69,6 @@
      & // char(ichar('0') + mod(iframe,10)) &
      & // '.h5'
              
-      ! Check data for very small values and 
-      do k=1,mz
-      do j=1,my
-      do i=1,mx
-      do m=1,meqn
-      data(i,j,k,m) = q(m,i,j,k)
-      end do
-      end do
-      end do
-      end do
     
     ! have id 0 creates hdf5 data layout and write all attributes
     if (id == 0) then
@@ -92,12 +80,10 @@
 	call h5tcopy_f(h5t_native_double,atype_id,ierr)
     
     ! Current version sets chunks size as whole dataset of q
-    ! It is known problem when compressed writing to file:
-    ! Small chunk sizes leads to hanging on simulation without any errors   
     cdims(1) = dimsf(1)
     cdims(2) = dimsf(2)
     cdims(3) = dimsf(3)
-	cdims(4) = meqn
+	cdims(4) = dimsf(4)
     
     	 ! create scalar dataspace for the attribute
     	 call h5screate_simple_f(arank,adims,aspace_id, ierr)
@@ -156,7 +142,6 @@
          call h5dcreate_f(file_id, dataset_name, h5t_native_double, &
                              dataspace_id, dataset_id, ierr, dcpl_id=dcpl)
 
-
 	     if (i == 1) then
          ! Attributes list is created only for MASTER
 	     
@@ -205,10 +190,9 @@
          ! close dataset
          call h5dclose_f(dataset_id, ierr)
          
-         
-
    enddo
    		 
+		 
          ! close the dataspace
          call h5sclose_f(dataspace_id, ierr)
     
@@ -221,8 +205,6 @@
    
       ! mpi barrier to make sure everything is synched
       call mpi_barrier(mpi_comm_3d, ierr)
-      !
-      ! Now every processor is writing its own attributes and data to its dataset
 
       ! setup file access property variable with parallel i/o access
       ! plist_id: property variable
@@ -271,7 +253,8 @@
      ! data: data by itself
      ! dimsf: dimensions of data we want to write to file
      ! xfer_prp = plist_id: data transfer property variable   
-     call h5dwrite_f(dataset_id, h5t_native_double, data, & 
+     call h5dwrite_f(dataset_id, h5t_native_double, q(meqn,&
+     & 1:maxmx, 1:maxmy, 1:maxmz),& 
      & dimsf, ierr, file_space_id = filespace, xfer_prp = plist_id)
 	 
      call h5dclose_f(dataset_id,ierr)
@@ -283,7 +266,7 @@
      call h5pclose_f(plist_id, ierr)
      call h5fclose_f(file_id, ierr)
 
-	 deallocate(data)
+!	 deallocate(data)
 	
      ! close fortran interface
      call h5close_f(ierr)
