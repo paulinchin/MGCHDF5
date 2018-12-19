@@ -4,9 +4,9 @@ Fortran subroutines and MATLAB scripts to work with HDF5 MAGIC3D output. This RE
 
 <b>Current versions</b>:
 1. MAGIC3Dc1.10.4 - parallel output/restart routines with compression working with HDF5 development branch for MAGIC3D2018b version which is compatible with CLAWPACK 5.5.0<br>
-1. MAGIC3Db1.10.4 - parallel output/restart routines with compression working with HDF5 development branch for MAGIC3D2018b version which is compatible with CLAWPACK 5.5.0 (depreciated)<br>
-1. MAGIC3D1.10.4 - parallel output/restart routines with compression working with HDF5 development branch which is compatible with CLAWPACK < 5.5.0 (depreciated)<br>
-
+2. MAGIC3Db1.10.4 - parallel output/restart routines with compression working with HDF5 development branch for MAGIC3D2018b version which is compatible with CLAWPACK 5.5.0 (depreciated)<br>
+3. MAGIC3D1.10.4 - parallel output/restart routines with compression working with HDF5 development branch which is compatible with CLAWPACK < 5.5.0 (depreciated)<br>
+3. MAGIC2D - parallel output/restart routines for 2D version of MAGIC with compression working with HDF5 development branch which is compatible with CLAWPACK < 5.5.0 <br>
 
 <b>Important note</b>:<br>
 Even though MAGIC3D2018b version uses new indexing (m,i,j,k), the output routines still saves data as (i,j,k,m) in order to be compatible with Matlab routines.
@@ -89,8 +89,8 @@ Matlab scripts can import the whole 3D domain (mx,my,mz,q) as it was done for ea
     a. Retrieve vertical slice in x or y direction setting slice position in meters<br>
     b. Retrieve horizontal slice in z direction setting slice position in meters<br>
     c. Load full 3D domain of all variables<br>
-  The script allows working with all 3 types of outputs (out3, out3ver, out3hor)<br>
-  The script allows retrieving only particular variables (in current version: 'u','v','w','rhop','rhorp','doxp','dnit2p','dox2p')<br>
-  The script allows make plots and video output<br>
+  The script allows working with all types of outputs (out3, out3v, out3h, out3a)<br>
+  The script allows retrieving only particular variables (in current version: 'u','v','w' (and their scaled values),'rhop','rhorp','doxp','dnit2p','dox2p','dox3p','dhydp','temp')<br>
+  The script allows make and save plots and video output<br>
   5. plotting.m - this routine calculates needed variables, does or does not make plots<br>
   6. afterframeh5.m - to calculate and plot airglow (based on afterframe.m)
