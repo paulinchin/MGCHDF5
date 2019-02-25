@@ -41,7 +41,8 @@
      integer :: rank = 4                                       ! data rank. q is 4D
      character(mpi_max_processor_name) hostname
      dimension q(meqn, 1-mbc:maxmx+mbc, 1-mbc:maxmy+mbc,&
-	 &               1-mbc:maxmz+mbc), mtotal(nDim)
+         &               1-mbc:maxmz+mbc), mtotal(nDim)
+
      integer(hsize_t), dimension(4) :: dimsf ! data dataset dimensions
      integer :: i,j,k,l,m,info,idd
 	 real*8 :: ngrids_out
@@ -68,7 +69,6 @@
      & // char(ichar('0') + mod(iframe/10,10)) &
      & // char(ichar('0') + mod(iframe,10)) &
      & // '.h5'
-             
     
     ! have id 0 creates hdf5 data layout and write all attributes
     if (id == 0) then
@@ -80,10 +80,10 @@
 	call h5tcopy_f(h5t_native_double,atype_id,ierr)
     
     ! Current version sets chunks size as whole dataset of q
-    cdims(1) = dimsf(1)
+    cdims(1) = 1
     cdims(2) = dimsf(2)
     cdims(3) = dimsf(3)
-	cdims(4) = dimsf(4)
+    cdims(4) = dimsf(4)
     
     	 ! create scalar dataspace for the attribute
     	 call h5screate_simple_f(arank,adims,aspace_id, ierr)
@@ -204,7 +204,7 @@
    end if
    
       ! mpi barrier to make sure everything is synched
-      call mpi_barrier(mpi_comm_3d, ierr)
+!      call mpi_barrier(mpi_comm_3d, ierr)
 
       ! setup file access property variable with parallel i/o access
       ! plist_id: property variable
@@ -212,7 +212,13 @@
       ! info - info regarding file access patterns and file system specifications
      call h5pcreate_f(h5p_file_access_f, plist_id, ierr)
      call h5pset_fapl_mpio_f(plist_id, mpi_comm_3d, info, ierr)
-     
+
+!   Next calls can be useful for particular simulations. Check their descriptions
+!     call h5pset_cache_f(plist_id,1,5210,20971520,0.75, ierr)     
+!     call h5pset_buffer_f(plist_id,20971520, ierr)
+!	  call h5pset_meta_block_size_f(plist_id,204800, ierr)
+
+
      ! open hdf5 file for current time
      ! filename: filename of current hdf5 file
      ! h5f_acc_rdwr_f: open to read and write
@@ -253,21 +259,19 @@
      ! data: data by itself
      ! dimsf: dimensions of data we want to write to file
      ! xfer_prp = plist_id: data transfer property variable   
-     call h5dwrite_f(dataset_id, h5t_native_double, q(meqn,&
-     & 1:maxmx, 1:maxmy, 1:maxmz),& 
-     & dimsf, ierr, file_space_id = filespace, xfer_prp = plist_id)
 	 
+     call h5dwrite_f(dataset_id, h5t_native_double, q(1:10,&
+     & 1:mx, 1:my, 1:mz),&
+     & dimsf, ierr, file_space_id = filespace, xfer_prp = plist_id)
+
      call h5dclose_f(dataset_id,ierr)
      
      enddo
-     
-     call h5sclose_f(filespace, ierr)
-     
+
+	 call h5sclose_f(filespace, ierr)
      call h5pclose_f(plist_id, ierr)
      call h5fclose_f(file_id, ierr)
 
-!	 deallocate(data)
-	
      ! close fortran interface
      call h5close_f(ierr)
      

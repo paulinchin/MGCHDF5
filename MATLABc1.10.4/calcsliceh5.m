@@ -2,7 +2,7 @@
 clear all
 clc
 
-% Nepal
+% % Nepal
 % dx = 1000;
 % dy = 2000;
 % dz = 250;
@@ -14,32 +14,45 @@ clc
 % mz = 1800;
 
 % Tohoku Acoustics
-dx = 1000;
-dy = 1000;
-dz = 250;
-lx = 15;
-ly = 24;
-lz = 1;
-mx = 1200;
-my = 1200;
-mz = 1000;
-
-% Palu
 % dx = 1000;
 % dy = 1000;
-% dz = 1000;
+% dz = 250;
 % lx = 15;
 % ly = 24;
 % lz = 1;
-% mx = 600;
-% my = 600;
+% mx = 1200;
+% my = 1200;
 % mz = 1000;
 
-slice = 600000; % y direction
+% Chile 2015
+% dx = 5000;
+% dy = 5000;
+% dz = 500;
+% lx = 36;
+% ly = 10;
+% lz = 1;
+% mx = 900;
+% my = 900;
+% mz = 700;
+
+% New Zealand
+dx = 1000;
+dy = 2000;
+dz = 500;
+lx = 18;
+ly = 20;
+lz = 1;
+mx = 900;
+my = 300;
+mz = 400;
+
+%slice = 2250000; % x direction
+%slice = 2925000; %
+slice = 300000;
 
 % Set slice direction
-flagslice = 'y'; % Meridional
-%flagslice = 'x'; % Zonal
+flagslice = 'y'; %Meridional (along X direction)
+%flagslice = 'x'; %Zonal (along Y direction)
 
 id = 0; % do not change this
 f = 0; % do not change this
@@ -56,7 +69,7 @@ yhigher = ylower + (my/ly)*dy;
 
 if ((slice>=ylower) && (slice<yhigher))
 f = f+1;
-id+1
+id
 end
 id = id+1;
 end

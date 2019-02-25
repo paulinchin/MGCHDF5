@@ -48,30 +48,10 @@ slicing
 
 if(videooutput)
     %For outstanding video quality - use ('video.avi','Uncompressed AVI')
-    v = VideoWriter('Chile2015SPECdisp.mp4','MPEG-4');
+    v = VideoWriter('video.mp4','MPEG-4');
     v.Quality = 100;
     v.FrameRate = 25;
     open(v);
-    writeVideo(v,mov(1:end));
+    writeVideo(v,movieoutput(1:end));
     close(v);
 end
-
-%% 23.41:0.1:32.4
-imagesc(0:4:451*4,0:1:990,slice250)
-axis xy
-xlabel('Time (sec) from the event')
-ylabel('Latitude (deg.)')
-%caxis([-5 5])
-%%
-
- % t=datenum(simdate_series);
-  imagesc(t,mlat(620:814),dvTEC(620:814,:));
-  colormap(parula(256));
-  axis xy;
-  datetick;
-  axis tight;
-  c=colorbar
-  xlabel(c,'\Delta vTEC (TECU)')
-  xlabel('UT')
-  caxis([-max(max(dvTEC(620:814,:))) max(max(dvTEC(620:814,:)))])
-  ylabel('magnetic lat. (deg.)')
